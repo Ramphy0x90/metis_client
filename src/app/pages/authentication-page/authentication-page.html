@@ -1,0 +1,38 @@
+<div class="auth-page page-container justify-center">
+	<div class="form-container shadow-xl">
+		<div class="header"></div>
+
+		<div class="form-body">
+			<div class="form-fields">
+				<div class="email-field form-field">
+					<label>Email</label>
+					<input-wrapper [prefixIcon]="'bi-envelope'">
+						<input
+							type="email"
+							placeholder="Enter your email address"
+							[(ngModel)]="authCredentials.email" />
+					</input-wrapper>
+				</div>
+
+				<div class="password-field form-field">
+					<label>Password</label>
+					<input-wrapper [prefixIcon]="'bi-lock'">
+						<input
+							type="password"
+							placeholder="Enter your password"
+							[(ngModel)]="authCredentials.password" />
+					</input-wrapper>
+				</div>
+			</div>
+
+			<div class="form-actions">
+				<button class="login-btn" (click)="login()">
+					Login
+					<i class="bi bi-arrow-right"></i>
+				</button>
+			</div>
+		</div>
+
+		<div class="footer"></div>
+	</div>
+</div>

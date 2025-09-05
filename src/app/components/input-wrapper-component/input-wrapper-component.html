@@ -1,0 +1,15 @@
+<div class="input-wrapper-container flex flex-row items-center">
+	@if (prefix) {
+		<div class="prefix" [innerHTML]="prefix"></div>
+	} @else if (prefixIcon) {
+		<i class="bi" [ngClass]="prefixIcon"></i>
+	}
+
+	<ng-content></ng-content>
+
+	@if (suffix) {
+		<div class="postfix" [innerHTML]="suffix"></div>
+	} @else if (suffixIcon) {
+		<i class="bi" [ngClass]="suffixIcon"></i>
+	}
+</div>

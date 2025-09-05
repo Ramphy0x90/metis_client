@@ -1,0 +1,27 @@
+@use '../../../assets/variables' as *;
+
+.input-wrapper-container {
+	border: 1px solid $color-foreground;
+	border-radius: $border-radius;
+	padding: 4px 6px;
+	gap: $space-sm;
+
+	&:focus-within {
+		border-color: $color-primary;
+	}
+}
+
+.input-wrapper-container .bi {
+	color: $color-text;
+}
+
+.input-wrapper-container ::ng-deep input {
+	width: 100%;
+	border: none !important;
+
+	&:focus {
+		outline: none;
+		border: none;
+		box-shadow: none;
+	}
+}
