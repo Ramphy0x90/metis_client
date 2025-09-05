@@ -1,0 +1,49 @@
+@use '../assets/variables' as *;
+
+::ng-deep .page-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+	background-color: $color-background;
+}
+
+// Forms styles
+::ng-deep .form-container {
+	padding: $space-lg;
+	border-radius: $border-radius;
+}
+
+::ng-deep .form-body {
+	display: flex;
+	flex-direction: column;
+	gap: $space-md;
+}
+
+::ng-deep .form-body .form-fields {
+	display: flex;
+	flex-direction: column;
+	gap: $space-md;
+}
+
+::ng-deep .form-body .form-field {
+	display: flex;
+	flex-direction: column;
+	gap: calc($space-sm / 2);
+}
+
+::ng-deep .form-field label {
+	font-weight: 500;
+}
+
+::ng-deep .form-field input {
+	border: 1px solid $color-foreground;
+	border-radius: $border-radius;
+	padding: 4px 6px;
+	font-size: medium;
+
+	&::placeholder {
+		color: $color-text-neutral;
+		font-size: small;
+	}
+}

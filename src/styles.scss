@@ -1,1 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'tailwindcss';
+@use './assets/variables' as *;
+
+* {
+	box-sizing: border-box;
+	transition: all 122ms linear;
+}
+
+html,
+body {
+	margin: 0 !important;
+	height: 100% !important;
+	font-family: sans-serif;
+	scroll-behavior: smooth;
+}
+
+a {
+	text-decoration: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+button {
+	border: none !important;
+	border-radius: $border-radius !important;
+	cursor: pointer !important;
+}
