@@ -11,10 +11,13 @@ $light-colors: (
 	primary: #4f46e5,
 	secondary: #f97316,
 	background: #fffeff,
-	foreground: rgb(202, 206, 220),
+	foreground: #cacedc,
+	foreground-light: #eaebee,
 	text: #111827,
 	text-light: #fffeff,
 	text-neutral: #bcc4df,
+
+	alert: #ef4444,
 );
 
 $space: (

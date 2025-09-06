@@ -2,11 +2,14 @@
 @use '../assets/forms';
 @use '../assets/variables' as *;
 
+.root-container {
+	display: flex;
+	flex-direction: column;
+}
+
 .root-container .body {
 	display: flex;
 	flex-direction: column-reverse;
-	height: 100%;
-	flex: 1;
 }
 
 // General style for all pages

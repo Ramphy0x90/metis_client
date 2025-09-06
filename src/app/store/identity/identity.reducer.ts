@@ -9,8 +9,12 @@ export const identityReducer = createReducer(
 		loading: true,
 		error: null,
 	})),
+
 	on(IdentityActions.loginSuccess, (state, { authResponse }) => ({
 		...state,
+		username: authResponse.username,
+		name: authResponse.name,
+		surname: authResponse.surname,
 		isAuthenticated: true,
 		accessToken: authResponse.accessToken,
 		refreshToken: authResponse.refreshToken,
@@ -18,8 +22,12 @@ export const identityReducer = createReducer(
 		error: null,
 		loading: false,
 	})),
+
 	on(IdentityActions.loginFailure, (state, { error }) => ({
 		...state,
+		username: null,
+		name: null,
+		surname: null,
 		isAuthenticated: false,
 		accessToken: null,
 		refreshToken: null,
@@ -27,8 +35,12 @@ export const identityReducer = createReducer(
 		error,
 		loading: false,
 	})),
+
 	on(IdentityActions.logout, (state) => ({
 		...state,
+		username: null,
+		name: null,
+		surname: null,
 		isAuthenticated: false,
 		accessToken: null,
 		refreshToken: null,
@@ -36,11 +48,13 @@ export const identityReducer = createReducer(
 		error: null,
 		loading: false,
 	})),
+
 	on(IdentityActions.refreshToken, (state) => ({
 		...state,
 		loading: true,
 		error: null,
 	})),
+
 	on(IdentityActions.refreshTokenSuccess, (state, { authResponse }) => ({
 		...state,
 		isAuthenticated: true,
@@ -50,8 +64,12 @@ export const identityReducer = createReducer(
 		error: null,
 		loading: false,
 	})),
+
 	on(IdentityActions.refreshTokenFailure, (state) => ({
 		...state,
+		username: null,
+		name: null,
+		surname: null,
 		isAuthenticated: false,
 		accessToken: null,
 		refreshToken: null,

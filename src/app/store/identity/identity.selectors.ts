@@ -8,6 +8,16 @@ export const selectIsAuthenticated = createSelector(
 	(state: IdentityState) => state.isAuthenticated,
 );
 
+export const selectUsername = createSelector(
+	selectIdentityState,
+	(state: IdentityState) => state.username,
+);
+
+export const selectUserLabel = createSelector(
+	selectIdentityState,
+	(state: IdentityState) => `${state.name} ${state.surname}`,
+);
+
 export const selectAccessToken = createSelector(
 	selectIdentityState,
 	(state: IdentityState) => state.accessToken,

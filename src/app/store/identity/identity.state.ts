@@ -1,6 +1,7 @@
-import { AuthenticationResponse } from '../../types/identity/authentication-response';
-
 export interface IdentityState {
+	username: string | null;
+	name: string | null;
+	surname: string | null;
 	isAuthenticated: boolean;
 	accessToken: string | null;
 	refreshToken: string | null;
@@ -10,6 +11,9 @@ export interface IdentityState {
 }
 
 export const initialIdentityState: IdentityState = {
+	username: null,
+	name: null,
+	surname: null,
 	isAuthenticated: false,
 	accessToken: null,
 	refreshToken: null,

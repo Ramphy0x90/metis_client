@@ -1,0 +1,72 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+.user-profile-container {
+	position: relative;
+	padding: map.get($space, sm) map.get($space, md);
+	gap: map.get($space, sm);
+	border-radius: map.get($border, radius);
+
+	&:hover:not(.profile-options) {
+		background-color: map.get($light-colors, primary);
+	}
+
+	&:hover .user-info {
+		color: map.get($light-colors, text-light);
+		cursor: pointer;
+	}
+
+	&:hover:has(.profile-options:hover) {
+		background-color: unset;
+	}
+
+	&:hover:has(.profile-options:hover) .user-info {
+		color: unset;
+		cursor: default;
+	}
+}
+
+.user-profile-container .profile-options {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 150px;
+	padding: map.get($space, sm) map.get($space, md);
+	margin-top: map.get($space, sm);
+	border-radius: map.get($border, radius);
+	font-size: smaller;
+	gap: map.get($space, sm);
+}
+
+.user-profile-container .profile-option {
+	&:hover {
+		color: map.get($light-colors, primary);
+		cursor: pointer;
+	}
+}
+
+.profile-options .logout {
+	color: map.get($light-colors, alert);
+	border-top: 1px solid map.get($light-colors, foreground-light);
+	padding-top: map.get($space, sm);
+	cursor: pointer;
+}
+
+.user-profile-container .profile-picture {
+	aspect-ratio: 1 / 1;
+	height: 36px;
+	background-color: map.get($light-colors, foreground);
+	border-radius: 100%;
+}
+
+.user-profile-container .user-label {
+	font-size: small;
+}
+
+.user-profile-container .user-role {
+	font-size: x-small;
+	color: map.get($light-colors, text-light);
+	background-color: map.get($light-colors, secondary);
+	padding: 2px 4px;
+	border-radius: map.get($border, radius);
+}
