@@ -36,4 +36,27 @@ export class IdentityEffects {
 			),
 		{ dispatch: false },
 	);
+
+	logout$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(IdentityActions.logout),
+				tap(() => {
+					this.router.navigate(['/auth']);
+				}),
+			),
+		{ dispatch: false },
+	);
+
+	refreshToken$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(IdentityActions.refreshToken),
+			switchMap(({ refreshToken }) =>
+				this.identityService.refreshToken(refreshToken).pipe(
+					map((authResponse) => IdentityActions.refreshTokenSuccess({ authResponse })),
+					catchError(() => of(IdentityActions.refreshTokenFailure())),
+				),
+			),
+		),
+	);
 }

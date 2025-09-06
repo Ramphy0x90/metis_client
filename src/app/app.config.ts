@@ -13,13 +13,24 @@ import { identityReducer } from './store/identity';
 import { provideEffects } from '@ngrx/effects';
 import { IdentityEffects } from './store/identity/identity.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { localStorageSync } from 'ngrx-store-localstorage';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideBrowserGlobalErrorListeners(),
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
-		provideStore({ identity: identityReducer }),
+		provideStore({ 
+			identity: identityReducer 
+		}, {
+			metaReducers: [
+				localStorageSync({
+					keys: ['identity'],
+					rehydrate: true,
+					storage: localStorage,
+				})
+			]
+		}),
 		provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 		provideEffects([IdentityEffects]),
 		provideHttpClient(),

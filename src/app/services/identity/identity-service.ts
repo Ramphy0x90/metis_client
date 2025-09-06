@@ -16,4 +16,10 @@ export class IdentityService {
 	public login(credentials: AuthenticationRequest): Observable<AuthenticationResponse> {
 		return this.httpClient.post<AuthenticationResponse>(`${this.API_BASE_AUTH}/login`, credentials);
 	}
+
+	public refreshToken(refreshToken: string): Observable<AuthenticationResponse> {
+		return this.httpClient.post<AuthenticationResponse>(`${this.API_BASE_AUTH}/refresh`, {
+			refreshToken
+		});
+	}
 }
