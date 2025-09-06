@@ -1,6 +1,6 @@
 <div class="navigation-container flex">
 	<div class="body flex shadow-xl">
-		<div class="nav-options flex" [ngClass]="isNavCollapsed ? 'closed' : 'open'">
+		<div class="nav-options flex" [ngClass]="(isNavOpen$ | async) ? 'open' : 'closed'">
 			@for (navOption of NAV_BAR_ROUTES; track navOption.label) {
 				<div
 					class="nav-option flex flex-row"
@@ -18,7 +18,7 @@
 		<div class="nav-actions">
 			<i
 				class="bi"
-				[ngClass]="isNavCollapsed ? 'bi-arrow-bar-right' : 'bi-arrow-bar-left'"
+				[ngClass]="(isNavOpen$ | async) ? 'bi-arrow-bar-left' : 'bi-arrow-bar-right'"
 				(click)="toggleNav()"></i>
 		</div>
 	</div>
