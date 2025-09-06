@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'tailwindcss';
 @use './assets/variables' as *;
 
@@ -29,6 +30,6 @@ h6 {
 
 button {
 	border: none !important;
-	border-radius: $border-radius !important;
+	border-radius: map.get($border, radius) !important;
 	cursor: pointer !important;
 }

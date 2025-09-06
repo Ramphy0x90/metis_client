@@ -1,0 +1,41 @@
+@use 'sass:map';
+@use './variables' as *;
+
+::ng-deep .form-container {
+	padding: map.get($space, lg);
+	border-radius: map.get($border, radius);
+}
+
+::ng-deep .form-body {
+	display: flex;
+	flex-direction: column;
+	gap: map.get($space, md);
+}
+
+::ng-deep .form-body .form-fields {
+	display: flex;
+	flex-direction: column;
+	gap: map.get($space, md);
+}
+
+::ng-deep .form-body .form-field {
+	display: flex;
+	flex-direction: column;
+	gap: calc(map.get($space, sm) / 2);
+}
+
+::ng-deep .form-field label {
+	font-weight: 500;
+}
+
+::ng-deep .form-field input {
+	border: 1px solid map.get($light-colors, foreground);
+	border-radius: map.get($border, radius);
+	padding: 4px 6px;
+	font-size: medium;
+
+	&::placeholder {
+		color: map.get($light-colors, text-neutral);
+		font-size: small;
+	}
+}

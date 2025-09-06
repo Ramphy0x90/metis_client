@@ -1,18 +1,31 @@
-// Colors
-$color-primary: #4f46e5; // main accent color
-$color-secondary: #f97316; // secondary accent / highlight
-$color-background: #fffeff; // page background
-$color-foreground: rgb(202, 206, 220);
-$color-text: #111827; // main text color
-$color-text-light: #fffeff;
-$color-text-neutral: #bcc4df;
+$device-size: (
+	xs: 0,
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1400px,
+);
 
-// Spacing
-$space-sm: 8px;
-$space-md: 16px;
-$space-lg: 32px;
+$light-colors: (
+	primary: #4f46e5,
+	secondary: #f97316,
+	background: #fffeff,
+	foreground: rgb(202, 206, 220),
+	text: #111827,
+	text-light: #fffeff,
+	text-neutral: #bcc4df,
+);
 
-$fake-center-bottom-push: 150px;
+$space: (
+	sm: 8px,
+	md: 16px,
+	lg: 32px,
+	fake-center-bottom-push: 150px,
+	nav: 250px,
+	nav-collapsed: 56px,
+);
 
-// Border radius
-$border-radius: 6px;
+$border: (
+	radius: 6px,
+);
