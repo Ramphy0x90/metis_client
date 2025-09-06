@@ -1,1 +1,11 @@
-<router-outlet />
+<div class="root-container h-full">
+	<div class="header"></div>
+
+	<div class="body h-full">
+		@if (isUserAuthenticated | async) {
+			<navigation-component></navigation-component>
+		}
+
+		<router-outlet />
+	</div>
+</div>
