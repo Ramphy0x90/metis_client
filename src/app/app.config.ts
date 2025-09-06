@@ -2,6 +2,7 @@ import {
 	ApplicationConfig,
 	provideBrowserGlobalErrorListeners,
 	provideZoneChangeDetection,
+	isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -11,6 +12,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { identityReducer } from './store/identity';
 import { provideEffects } from '@ngrx/effects';
 import { IdentityEffects } from './store/identity/identity.effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -18,6 +20,7 @@ export const appConfig: ApplicationConfig = {
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
 		provideStore({ identity: identityReducer }),
+		provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
 		provideEffects([IdentityEffects]),
 		provideHttpClient(),
 	],
