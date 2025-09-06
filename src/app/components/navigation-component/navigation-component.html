@@ -1,1 +1,25 @@
-<p>navigation-component works!</p>
+<div class="navigation-container flex">
+	<div class="body flex shadow-xl">
+		<div class="nav-options flex" [ngClass]="isNavCollapsed ? 'closed' : 'open'">
+			@for (navOption of NAV_BAR_ROUTES; track navOption.label) {
+				<div
+					class="nav-option flex flex-row"
+					[routerLink]="navOption.path"
+					[routerLinkActive]="'active'">
+					<div class="nav-option-icon flex justify-center items-center">
+						<i class="bi" [ngClass]="navOption.icon"></i>
+					</div>
+
+					<div class="nav-option-label">{{ navOption.label }}</div>
+				</div>
+			}
+		</div>
+
+		<div class="nav-actions">
+			<i
+				class="bi"
+				[ngClass]="isNavCollapsed ? 'bi-arrow-bar-right' : 'bi-arrow-bar-left'"
+				(click)="toggleNav()"></i>
+		</div>
+	</div>
+</div>

@@ -1,1 +1,111 @@
+@use 'sass:map';
+@use 'tailwindcss';
+@use '../../../assets/variables' as *;
 
+.navigation-container {
+	justify-content: center;
+	padding: 0 map.get($space, md);
+	padding-bottom: map.get($space, md);
+	background-color: map.get($light-colors, background);
+}
+
+.navigation-container .body {
+	flex: 1;
+	justify-content: center;
+	padding: 0 map.get($space, md);
+	padding-bottom: map.get($space, md);
+	border-radius: map.get($border, radius);
+	padding: map.get($space, md);
+	max-width: 400px;
+	color: map.get($light-colors, text);
+}
+
+.navigation-container .body .nav-actions {
+	display: none;
+
+	&:hover .bi {
+		color: map.get($light-colors, primary);
+		cursor: pointer;
+	}
+}
+
+.navigation-container .nav-options {
+	flex: 1;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.nav-options .nav-option {
+	aspect-ratio: 1/1;
+	padding: map.get($space, sm);
+	border-radius: 100%;
+
+	&:hover {
+		background-color: map.get($light-colors, primary);
+		color: map.get($light-colors, text-light);
+		cursor: pointer;
+	}
+}
+
+.nav-options .nav-option.active {
+	background-color: map.get($light-colors, primary);
+	color: map.get($light-colors, text-light);
+}
+
+.nav-options .nav-option-label {
+	display: none;
+}
+
+@media (min-width: map.get($device-size, md)) {
+	.navigation-container .body {
+		flex-direction: column;
+		justify-content: start;
+		align-items: center;
+	}
+
+	.navigation-container,
+	.body,
+	.nav-options {
+		height: 100%;
+	}
+
+	.navigation-container .body .nav-actions {
+		display: block;
+	}
+
+	.navigation-container .nav-options {
+		flex-direction: column;
+		justify-content: start;
+		gap: map.get($space, md);
+	}
+
+	.navigation-container .nav-options.open {
+		width: map.get($space, nav);
+	}
+
+	.navigation-container .nav-options.closed {
+		width: map.get($space, nav-collapsed);
+
+		&.nav-options .nav-option {
+			justify-content: center;
+			padding: map.get($space, sm);
+			font-size: large;
+		}
+
+		&.nav-options .nav-option-label {
+			display: none;
+		}
+	}
+
+	.nav-options .nav-option {
+		aspect-ratio: auto;
+		justify-content: start;
+		padding: map.get($space, sm) map.get($space, md);
+		border-radius: map.get($border, radius);
+		gap: map.get($space, sm);
+	}
+
+	.nav-options .nav-option-label {
+		display: block;
+	}
+}

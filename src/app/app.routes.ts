@@ -13,9 +13,9 @@ export const enum ROUTES {
 }
 
 export const NAV_BAR_ROUTES: readonly NavBarItem[] = [
-	{ label: 'Dashboard', path: ROUTES.DASHBOARD },
-	{ label: 'Tenants', path: ROUTES.TENANTS },
-	{ label: 'Users', path: ROUTES.USERS },
+	{ label: 'Dashboard', path: ROUTES.DASHBOARD, icon: 'bi-house' },
+	{ label: 'Tenants', path: ROUTES.TENANTS, icon: 'bi-building' },
+	{ label: 'Users', path: ROUTES.USERS, icon: 'bi-people' },
 ];
 
 export const routes: Routes = [
