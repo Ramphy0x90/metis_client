@@ -1,18 +1,19 @@
+@use 'sass:map';
 @use '../../../assets/variables' as *;
 
 .input-wrapper-container {
-	border: 1px solid $color-foreground;
-	border-radius: $border-radius;
+	border: 1px solid map.get($light-colors, foreground);
+	border-radius: map.get($border, radius);
 	padding: 4px 6px;
-	gap: $space-sm;
+	gap: map.get($space, sm);
 
 	&:focus-within {
-		border-color: $color-primary;
+		border-color: map.get($light-colors, primary);
 	}
 }
 
 .input-wrapper-container .bi {
-	color: $color-text;
+	color: map.get($light-colors, text);
 }
 
 .input-wrapper-container ::ng-deep input {
