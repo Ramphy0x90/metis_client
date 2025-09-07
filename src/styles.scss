@@ -13,6 +13,7 @@ body {
 	height: 100% !important;
 	font-family: sans-serif;
 	scroll-behavior: smooth;
+	color: map.get($light-colors, text);
 }
 
 a {

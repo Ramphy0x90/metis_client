@@ -41,8 +41,7 @@
 	border-radius: 100%;
 
 	&:hover {
-		background-color: map.get($light-colors, primary);
-		color: map.get($light-colors, text-light);
+		background-color: map.get($light-colors, hover);
 		cursor: pointer;
 	}
 }
