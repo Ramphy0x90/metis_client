@@ -5,8 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "docker:build": "docker build -t metis-client .",
+    "docker:run": "docker run -p 80:80 metis-client",
+    "docker:compose:up": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
+    "docker:compose:build": "docker-compose build",
+    "docker:compose:logs": "docker-compose logs -f",
+    "ssl:init": "./init-ssl.sh"
   },
   "prettier": {
     "printWidth": 100,
