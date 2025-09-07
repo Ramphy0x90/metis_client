@@ -1,3 +1,30 @@
 <div class="dashboard-page page-container">
-	<p>dashboard-page works!</p>
+	<div class="header">
+		<div class="page-title">Dashboard</div>
+
+		<div class="context-actions"></div>
+	</div>
+
+	<div class="body flex">
+		<div class="info-cards flex">
+			<div class="info-row flex">
+				<d-card-component [title]="'Total Tenants'" [icon]="'bi-building'" [inpactValue]="'0'">
+				</d-card-component>
+
+				<d-card-component [title]="'Total Users'" [icon]="'bi-people'" [inpactValue]="'0'">
+				</d-card-component>
+			</div>
+
+			<div class="info-row flex">
+				<d-card-component
+					[title]="'Active Bookings'"
+					[icon]="'bi-calendar4-week'"
+					[inpactValue]="'0'">
+				</d-card-component>
+
+				<d-card-component [title]="'Revenue'" [icon]="'bi-cash-stack'" [inpactValue]="'0'">
+				</d-card-component>
+			</div>
+		</div>
+	</div>
 </div>

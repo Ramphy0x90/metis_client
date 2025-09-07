@@ -30,6 +30,7 @@
 	top: 100%;
 	right: 0;
 	width: 150px;
+	background-color: map.get($light-colors, background);
 	padding: map.get($space, sm) map.get($space, md);
 	margin-top: map.get($space, sm);
 	border-radius: map.get($border, radius);
@@ -46,7 +47,7 @@
 
 .profile-options .logout {
 	color: map.get($light-colors, alert);
-	border-top: 1px solid map.get($light-colors, foreground-light);
+	border-top: 1px solid map.get($light-colors, border);
 	padding-top: map.get($space, sm);
 	cursor: pointer;
 }

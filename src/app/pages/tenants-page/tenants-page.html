@@ -1,3 +1,35 @@
-<div class="page-container">
-	<p>tenants-page works!</p>
+<div class="tenants-page page-container">
+	<div class="header">
+		<div class="page-title">Tenant Management</div>
+
+		<div class="context-actions">
+			<button class="create-tenant">
+				<i class="bi bi-plus-lg"></i>
+				Create Tenant
+			</button>
+		</div>
+	</div>
+
+	<div class="body">
+		<div class="info-cards flex">
+			<div class="info-row flex">
+				<d-card-component [title]="'Total Tenants'" [icon]="'bi-building'" [inpactValue]="'0'">
+				</d-card-component>
+
+				<d-card-component [title]="'Total Employees'" [icon]="'bi-people'" [inpactValue]="'0'">
+				</d-card-component>
+			</div>
+
+			<div class="info-row flex">
+				<d-card-component
+					[title]="'Active Bookings'"
+					[icon]="'bi-calendar4-week'"
+					[inpactValue]="'0'">
+				</d-card-component>
+
+				<d-card-component [title]="'Total Customers'" [icon]="'bi-people'" [inpactValue]="'0'">
+				</d-card-component>
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,0 +1,34 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+.d-card-container {
+	width: 100%;
+	height: 120px;
+	padding: map.get($space, md);
+	border: 1px solid map.get($light-colors, border);
+	border-radius: map.get($border, radius);
+	gap: map.get($space, md);
+	cursor: default;
+
+	&:hover {
+		border-color: map.get($light-colors, primary);
+	}
+
+	&:hover .card-icon {
+		color: map.get($light-colors, primary) !important;
+	}
+}
+
+.d-card-container .header {
+	justify-content: space-between;
+	font-size: smaller;
+}
+
+.d-card-container .header .card-icon {
+	font-size: large;
+	color: map.get($light-colors, text-neutral);
+}
+
+.d-card-container .body .highligted-info {
+	font-size: x-large;
+}

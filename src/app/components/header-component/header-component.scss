@@ -3,7 +3,7 @@
 
 .header-container {
 	background-color: map.get($light-colors, background);
-	border-bottom: 1px solid map.get($light-colors, foreground-light);
+	border-bottom: 1px solid map.get($light-colors, border);
 	padding: map.get($space, sm) map.get($space, md);
 	box-sizing: border-box;
 	width: 100%;

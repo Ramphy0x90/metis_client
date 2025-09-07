@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use './variables' as *;
+
+::ng-deep .page-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+	padding: map.get($space, md);
+	background-color: map.get($light-colors, background);
+	gap: map.get($space, md);
+}
+
+::ng-deep .page-container > .header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: map.get($space, sm) map.get($space, md);
+}
+
+::ng-deep .page-container > .header .page-title {
+	font-size: x-large;
+	font-weight: 700;
+}
+
+::ng-deep .page-container > .header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: map.get($space, sm) map.get($space, md);
+}
+
+::ng-deep .page-container > .body {
+	width: 100%;
+	display: flex;
+}

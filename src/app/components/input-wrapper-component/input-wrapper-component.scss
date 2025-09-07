@@ -2,7 +2,7 @@
 @use '../../../assets/variables' as *;
 
 .input-wrapper-container {
-	border: 1px solid map.get($light-colors, foreground);
+	border: 1px solid map.get($light-colors, border);
 	border-radius: map.get($border, radius);
 	padding: 4px 6px;
 	gap: map.get($space, sm);

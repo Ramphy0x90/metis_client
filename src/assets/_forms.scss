@@ -29,7 +29,7 @@
 }
 
 ::ng-deep .form-field input {
-	border: 1px solid map.get($light-colors, foreground);
+	border: 1px solid map.get($light-colors, border);
 	border-radius: map.get($border, radius);
 	padding: 4px 6px;
 	font-size: medium;

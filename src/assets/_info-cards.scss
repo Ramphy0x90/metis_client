@@ -1,0 +1,26 @@
+@use 'sass:map';
+@use './variables' as *;
+
+::ng-deep .info-cards,
+::ng-deep .info-cards .info-row {
+	flex: 1;
+	flex-direction: column;
+	gap: map.get($space, md);
+}
+
+::ng-deep .info-cards .info-row d-card-component {
+	flex: 1;
+}
+
+@media (min-width: map.get($device-size, md)) {
+	::ng-deep .info-cards {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+@media (min-width: map.get($device-size, xl)) {
+	::ng-deep .info-cards .info-row {
+		flex-direction: row;
+	}
+}
