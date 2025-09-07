@@ -38,7 +38,7 @@
 	gap: map.get($space, sm);
 }
 
-.user-profile-container .profile-option {
+.user-profile-container .general-options .profile-option {
 	&:hover {
 		color: map.get($light-colors, primary);
 		cursor: pointer;

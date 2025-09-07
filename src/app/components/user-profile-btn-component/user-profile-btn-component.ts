@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
 	IdentityActions,
@@ -17,7 +17,10 @@ import { CommonModule } from '@angular/common';
 	standalone: true,
 })
 export class UserProfileBtnComponent {
-	constructor(private store: Store) {}
+	constructor(
+		private store: Store,
+		private elementRef: ElementRef,
+	) {}
 
 	areOptionsVisible: boolean = false;
 
@@ -31,6 +34,17 @@ export class UserProfileBtnComponent {
 
 	get isUserAuthenticated(): Observable<boolean> {
 		return this.store.select(selectIsAuthenticated);
+	}
+
+	@HostListener('document:click', ['$event'])
+	onDocumentClick(event: Event): void {
+		if (this.areOptionsVisible) {
+			const clickedInside = this.elementRef.nativeElement.contains(event.target as Node);
+
+			if (!clickedInside) {
+				this.areOptionsVisible = false;
+			}
+		}
 	}
 
 	toggleOptionsVisibility(): void {
