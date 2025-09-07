@@ -4,7 +4,7 @@ import {
 	provideZoneChangeDetection,
 	isDevMode,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -21,6 +21,7 @@ export const appConfig: ApplicationConfig = {
 		provideBrowserGlobalErrorListeners(),
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
+    withHashLocation()
 		provideStore(
 			{
 				identity: identityReducer,
