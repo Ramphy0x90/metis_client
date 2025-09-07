@@ -22,7 +22,6 @@
 						"tsConfig": "tsconfig.app.json",
 						"inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": ["deepmerge"],
-            "baseHref": "/",
 						"assets": [
 							{
 								"glob": "**/*",
