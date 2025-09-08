@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://metis.ch/api',
-  serverUrl: 'https://metis.ch'
+  apiUrl: 'http://metis.r16a.ch/api',
+  serverUrl: 'http://metis.r16a.ch'
 };
