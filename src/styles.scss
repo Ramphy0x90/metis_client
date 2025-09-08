@@ -34,3 +34,31 @@ button {
 	border-radius: map.get($border, radius) !important;
 	cursor: pointer !important;
 }
+
+input {
+	padding: 4px 6px;
+	font-size: medium;
+
+	&::placeholder {
+		color: map.get($light-colors, text-neutral);
+		font-size: small;
+	}
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	box-sizing: border-box;
+}
+
+table thead tr {
+	border-bottom: 1px solid map.get($light-colors, border);
+}
+
+table thead th {
+	text-align: left;
+	font-weight: 500;
+	font-size: smaller;
+	color: map.get($light-colors, text-neutral);
+	padding-bottom: map.get($space, sm);
+}

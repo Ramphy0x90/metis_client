@@ -38,17 +38,15 @@
 .nav-options .nav-option {
 	aspect-ratio: 1/1;
 	padding: map.get($space, sm);
-	border-radius: 100%;
 
 	&:hover {
-		background-color: map.get($light-colors, hover);
 		cursor: pointer;
 	}
 }
 
 .nav-options .nav-option.active {
-	background-color: map.get($light-colors, primary);
-	color: map.get($light-colors, text-light);
+	border-bottom: 2px solid map.get($light-colors, primary);
+	color: map.get($light-colors, primary);
 }
 
 .nav-options .nav-option-label {
@@ -102,6 +100,17 @@
 		padding: map.get($space, sm) map.get($space, md);
 		border-radius: map.get($border, radius);
 		gap: map.get($space, sm);
+
+		&:hover {
+			background-color: map.get($light-colors, hover);
+			cursor: pointer;
+		}
+	}
+
+	.nav-options .nav-option.active {
+		background-color: map.get($light-colors, primary);
+		border-bottom: none;
+		color: map.get($light-colors, text-light);
 	}
 
 	.nav-options .nav-option-label {

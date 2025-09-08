@@ -1,0 +1,25 @@
+<div class="entity-table-container flex flex-col">
+	<div class="header w-full flex flex-row justify-between">
+		<div class="table-title">{{ tableTitle }}</div>
+
+		<div class="search-container">
+			<input-wrapper [prefixIcon]="'bi-search'">
+				<input type="text" placeholder="Search..." />
+			</input-wrapper>
+		</div>
+	</div>
+
+	<div class="body">
+		<table>
+			<thead>
+				<tr>
+					@for (columnKey of dataKeys; track columnKey) {
+						<th>{{ columns[columnKey] }}</th>
+					}
+				</tr>
+				<th></th>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</div>

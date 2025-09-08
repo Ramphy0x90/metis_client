@@ -1,0 +1,22 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+$colum-size: 100px;
+
+.entity-table-container {
+	height: 100%;
+	border: 1px solid map.get($light-colors, border);
+	border-radius: map.get($border, radius);
+	gap: map.get($space, lg);
+	padding: map.get($space, md);
+}
+
+.entity-table-container .header .table-title {
+	font-size: larger;
+	font-weight: 700;
+}
+
+.entity-table-container .table-header {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, $colum-size);
+}
