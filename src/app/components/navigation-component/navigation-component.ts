@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Signal, inject } from '@angular/core';
 import { NAV_BAR_ROUTES } from '../../app.routes';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { NavigationActions } from '../../store/navigation/navigation.actions';
-import { selectIsNavigationOpen } from '../../store/navigation/navigation.selectors';
+import { NavigationStore } from '../../store/navigation/navigation.store';
 
 @Component({
 	selector: 'navigation-component',
@@ -16,14 +13,15 @@ import { selectIsNavigationOpen } from '../../store/navigation/navigation.select
 })
 export class NavigationComponent {
 	readonly NAV_BAR_ROUTES = NAV_BAR_ROUTES;
+	private navigationStore: InstanceType<typeof NavigationStore> = inject(NavigationStore);
 
-	isNavOpen$: Observable<boolean>;
+	isNavOpen: Signal<boolean>;
 
-	constructor(private store: Store) {
-		this.isNavOpen$ = this.store.select(selectIsNavigationOpen);
+	constructor() {
+		this.isNavOpen = this.navigationStore.isOpen;
 	}
 
 	toggleNav(): void {
-		this.store.dispatch(NavigationActions.toggleNavigation());
+		this.navigationStore.toggle();
 	}
 }

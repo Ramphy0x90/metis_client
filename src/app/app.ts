@@ -1,9 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, Signal, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './components/navigation-component/navigation-component';
-import { Store } from '@ngrx/store';
-import { selectIsAuthenticated } from './store/identity';
-import { Observable } from 'rxjs';
+import { IdentityStore } from './store/identity/identity.store';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header-component/header-component';
 
@@ -16,9 +14,6 @@ import { HeaderComponent } from './components/header-component/header-component'
 export class App {
 	protected readonly title = signal('Metis');
 
-	constructor(private store: Store) {}
-
-	get isUserAuthenticated(): Observable<boolean> {
-		return this.store.select(selectIsAuthenticated);
-	}
+	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
+	readonly isUserAuthenticated: Signal<boolean> = this.identityStore.isAuthenticated;
 }

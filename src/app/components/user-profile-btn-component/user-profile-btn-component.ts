@@ -1,12 +1,5 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
-import { Store } from '@ngrx/store';
-import {
-	IdentityActions,
-	selectIsAuthenticated,
-	selectUserLabel,
-	selectUsername,
-} from '../../store/identity';
-import { Observable } from 'rxjs';
+import { Component, ElementRef, HostListener, Signal, inject } from '@angular/core';
+import { IdentityStore } from '../../store/identity/identity.store';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,23 +10,18 @@ import { CommonModule } from '@angular/common';
 	standalone: true,
 })
 export class UserProfileBtnComponent {
-	constructor(
-		private store: Store,
-		private elementRef: ElementRef,
-	) {}
+	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
 
 	areOptionsVisible: boolean = false;
 
-	get username(): Observable<string | null> {
-		return this.store.select(selectUsername);
-	}
+	username: Signal<string | null>;
+	userLabel: Signal<string | null>;
+	isUserAuthenticated: Signal<boolean>;
 
-	get userLabel(): Observable<string | null> {
-		return this.store.select(selectUserLabel);
-	}
-
-	get isUserAuthenticated(): Observable<boolean> {
-		return this.store.select(selectIsAuthenticated);
+	constructor(private elementRef: ElementRef) {
+		this.username = this.identityStore.username;
+		this.userLabel = this.identityStore.userLabel;
+		this.isUserAuthenticated = this.identityStore.isAuthenticated;
 	}
 
 	@HostListener('document:click', ['$event'])
@@ -52,6 +40,6 @@ export class UserProfileBtnComponent {
 	}
 
 	logout(): void {
-		this.store.dispatch(IdentityActions.logout());
+		this.identityStore.logout();
 	}
 }

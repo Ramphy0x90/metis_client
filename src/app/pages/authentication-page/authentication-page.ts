@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { InputWrapperComponent } from '../../components/input-wrapper-component/input-wrapper-component';
 import { CommonModule } from '@angular/common';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { FormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { IdentityActions } from '../../store/identity';
+import { IdentityStore } from '../../store/identity/identity.store';
 
 @Component({
 	selector: 'app-authentication-page',
@@ -14,14 +13,14 @@ import { IdentityActions } from '../../store/identity';
 	standalone: true,
 })
 export class AuthenticationPage {
+	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
+
 	authCredentials: AuthenticationRequest = {
 		email: '',
 		password: '',
 	};
 
-	constructor(private store: Store) {}
-
 	login(): void {
-		this.store.dispatch(IdentityActions.login({ credentials: this.authCredentials }));
+		this.identityStore.login(this.authCredentials);
 	}
 }

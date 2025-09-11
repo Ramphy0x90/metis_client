@@ -1,0 +1,136 @@
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { computed, effect } from '@angular/core';
+import { IdentityState, initialIdentityState } from './identity.state';
+import { IdentityService } from '../../services/identity/identity-service';
+import { AuthenticationRequest } from '../../types/identity/authentication-request';
+import { catchError, tap } from 'rxjs/operators';
+import { EMPTY, switchMap, Observable } from 'rxjs';
+import { STORE_FEATURE } from '../features';
+
+export const IdentityStore = signalStore(
+	withState<IdentityState>(initialIdentityState),
+	withComputed((store) => ({
+		userLabel: computed(() => `${store.name?.() ?? ''} ${store.surname?.() ?? ''}`.trim()),
+		authHeaders: computed<Record<string, string>>(() => {
+			const token = store.accessToken?.();
+			const type = store.tokenType?.();
+			return token && type ? { Authorization: `${type} ${token}` } : ({} as Record<string, string>);
+		}),
+	})),
+	withMethods((store: any, identityService = inject(IdentityService), router = inject(Router)) => {
+		// Rehydrate
+		const rawState = localStorage.getItem(STORE_FEATURE.IDENTITY);
+		if (rawState) {
+			const saved = JSON.parse(rawState) as Partial<IdentityState>;
+			patchState(store, { ...initialIdentityState, ...saved, loading: false, error: null });
+		}
+
+		// Persist
+		effect(() => {
+			const snapshot = {
+				username: store.username?.(),
+				name: store.name?.(),
+				surname: store.surname?.(),
+				isAuthenticated: store.isAuthenticated?.(),
+				accessToken: store.accessToken?.(),
+				refreshToken: store.refreshToken?.(),
+				tokenType: store.tokenType?.(),
+			} as Partial<IdentityState>;
+			localStorage.setItem(STORE_FEATURE.IDENTITY, JSON.stringify(snapshot));
+		});
+
+		const simpleEffect = (fn: () => void) => fn;
+
+		// Effect after authentication
+		const navigateToDashboard = simpleEffect(() => {
+			router.navigate(['/dashboard']);
+		});
+
+		// Effect after logout
+		const navigateToAuth = simpleEffect(() => {
+			router.navigate(['/auth']);
+		});
+
+		return {
+			login: rxMethod<AuthenticationRequest>((credentials$: Observable<AuthenticationRequest>) =>
+				credentials$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((credentials) =>
+						identityService.login(credentials).pipe(
+							tap((authResponse) => {
+								patchState(store, {
+									username: authResponse.username,
+									name: authResponse.name,
+									surname: authResponse.surname,
+									isAuthenticated: true,
+									accessToken: authResponse.accessToken,
+									refreshToken: authResponse.refreshToken,
+									tokenType: authResponse.tokenType,
+									error: null,
+									loading: false,
+								});
+								navigateToDashboard();
+							}),
+							catchError((error) => {
+								patchState(store, {
+									username: null,
+									name: null,
+									surname: null,
+									isAuthenticated: false,
+									accessToken: null,
+									refreshToken: null,
+									tokenType: null,
+									error: error?.message || 'Login failed',
+									loading: false,
+								});
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			logout(): void {
+				patchState(store, { ...initialIdentityState });
+				navigateToAuth();
+			},
+
+			refreshAuthToken: rxMethod<string>((refreshToken$: Observable<string>) =>
+				refreshToken$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((refreshToken) =>
+						identityService.refreshToken(refreshToken).pipe(
+							tap((authResponse) => {
+								patchState(store, {
+									isAuthenticated: true,
+									accessToken: authResponse.accessToken,
+									refreshToken: authResponse.refreshToken,
+									tokenType: authResponse.tokenType,
+									error: null,
+									loading: false,
+								});
+							}),
+							catchError(() => {
+								patchState(store, {
+									username: null,
+									name: null,
+									surname: null,
+									isAuthenticated: false,
+									accessToken: null,
+									refreshToken: null,
+									tokenType: null,
+									error: 'Token refresh failed',
+									loading: false,
+								});
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+		};
+	}),
+);
