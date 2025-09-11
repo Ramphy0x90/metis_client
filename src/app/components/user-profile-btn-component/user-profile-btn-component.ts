@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, Signal, inject } from '@angular/core';
 import { IdentityStore } from '../../store/identity/identity.store';
 import { CommonModule } from '@angular/common';
+import { computed } from '@angular/core';
 
 @Component({
 	selector: 'user-profile-btn-component',
@@ -18,10 +19,15 @@ export class UserProfileBtnComponent {
 	userLabel: Signal<string | null>;
 	isUserAuthenticated: Signal<boolean>;
 
+	// Users only have one role *_*
+	roles: Signal<string[]>;
+	mainRole: Signal<string> = computed(() => this.roles()[0]);
+
 	constructor(private elementRef: ElementRef) {
 		this.username = this.identityStore.username;
 		this.userLabel = this.identityStore.userLabel;
 		this.isUserAuthenticated = this.identityStore.isAuthenticated;
+		this.roles = this.identityStore.roles;
 	}
 
 	@HostListener('document:click', ['$event'])
