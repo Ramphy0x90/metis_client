@@ -1,3 +1,5 @@
+import { TenantResponse } from '../../types/tenant/tenant-response';
+
 export interface IdentityState {
 	username: string | null;
 	name: string | null;
@@ -9,6 +11,8 @@ export interface IdentityState {
 	tokenType: string | null;
 	error: string | null;
 	loading: boolean;
+	tenants: TenantResponse[];
+	tenantsTotalCount: number;
 }
 
 export const initialIdentityState: IdentityState = {
@@ -22,4 +26,6 @@ export const initialIdentityState: IdentityState = {
 	tokenType: null,
 	error: null,
 	loading: false,
+	tenants: [],
+	tenantsTotalCount: 0,
 };

@@ -1,6 +1,13 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
+import {
+	signalStore,
+	withState,
+	withComputed,
+	withMethods,
+	patchState,
+	withHooks,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect } from '@angular/core';
 import { IdentityState, initialIdentityState } from './identity.state';
@@ -12,6 +19,7 @@ import { STORE_FEATURE } from '../features';
 
 export const IdentityStore = signalStore(
 	withState<IdentityState>(initialIdentityState),
+
 	withComputed((store) => ({
 		userLabel: computed(() => `${store.name?.() ?? ''} ${store.surname?.() ?? ''}`.trim()),
 		authHeaders: computed<Record<string, string>>(() => {
@@ -20,29 +28,8 @@ export const IdentityStore = signalStore(
 			return token && type ? { Authorization: `${type} ${token}` } : ({} as Record<string, string>);
 		}),
 	})),
-	withMethods((store: any, identityService = inject(IdentityService), router = inject(Router)) => {
-		// Rehydrate
-		const rawState = localStorage.getItem(STORE_FEATURE.IDENTITY);
-		if (rawState) {
-			const saved = JSON.parse(rawState) as Partial<IdentityState>;
-			patchState(store, { ...initialIdentityState, ...saved, loading: false, error: null });
-		}
 
-		// Persist
-		effect(() => {
-			const snapshot = {
-				username: store.username?.(),
-				name: store.name?.(),
-				surname: store.surname?.(),
-				isAuthenticated: store.isAuthenticated?.(),
-				roles: store.roles?.(),
-				accessToken: store.accessToken?.(),
-				refreshToken: store.refreshToken?.(),
-				tokenType: store.tokenType?.(),
-			} as Partial<IdentityState>;
-			localStorage.setItem(STORE_FEATURE.IDENTITY, JSON.stringify(snapshot));
-		});
-
+	withMethods((store, identityService = inject(IdentityService), router = inject(Router)) => {
 		const simpleEffect = (fn: () => void) => fn;
 
 		// Effect after authentication
@@ -74,6 +61,7 @@ export const IdentityStore = signalStore(
 									error: null,
 									loading: false,
 								});
+
 								navigateToDashboard();
 							}),
 							catchError((error) => {
@@ -95,11 +83,6 @@ export const IdentityStore = signalStore(
 					),
 				),
 			),
-
-			logout(): void {
-				patchState(store, { ...initialIdentityState });
-				navigateToAuth();
-			},
 
 			refreshAuthToken: rxMethod<string>((refreshToken$: Observable<string>) =>
 				refreshToken$.pipe(
@@ -134,6 +117,58 @@ export const IdentityStore = signalStore(
 					),
 				),
 			),
+
+			logout(): void {
+				patchState(store, { ...initialIdentityState });
+				navigateToAuth();
+			},
+
+			loadAllTenants: rxMethod<void>((trigger$) =>
+				trigger$.pipe(
+					switchMap(() =>
+						identityService.getAllTenants().pipe(
+							tap((allTenantsRes) => {
+								patchState(store, {
+									tenants: allTenantsRes.tenants,
+									tenantsTotalCount: allTenantsRes.totalCount,
+								});
+							}),
+							catchError(() => {
+								patchState(store, { tenants: [], tenantsTotalCount: 0 });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
 		};
+	}),
+
+	withHooks({
+		onInit(store) {
+			// Rehydrate
+			const rawState = localStorage.getItem(STORE_FEATURE.IDENTITY);
+			if (rawState) {
+				const saved = JSON.parse(rawState) as Partial<IdentityState>;
+				patchState(store, { ...initialIdentityState, ...saved, loading: false, error: null });
+			}
+
+			// On store change, persiste in localstorage for re-hydration
+			effect(() => {
+				const snapshot = {
+					username: store.username?.(),
+					name: store.name?.(),
+					surname: store.surname?.(),
+					isAuthenticated: store.isAuthenticated?.(),
+					roles: store.roles?.(),
+					accessToken: store.accessToken?.(),
+					refreshToken: store.refreshToken?.(),
+					tokenType: store.tokenType?.(),
+					tenants: store.tenants?.(),
+					tenantsTotalCount: store.tenantsTotalCount?.(),
+				} as Partial<IdentityState>;
+				localStorage.setItem(STORE_FEATURE.IDENTITY, JSON.stringify(snapshot));
+			});
+		},
 	}),
 );

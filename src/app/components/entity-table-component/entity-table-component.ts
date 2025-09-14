@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal, Signal } from '@angular/core';
 import { InputWrapperComponent } from '../input-wrapper-component/input-wrapper-component';
+import { Column } from '../../types/entity-table/column';
 
 @Component({
 	selector: 'entity-table-component',
@@ -13,10 +14,10 @@ export class EntityTableComponent<T> {
 	@Input() tableTitle: string = '';
 
 	// Data label by data key
-	@Input() columns: Record<string, string> = {};
-	@Input() data: T[] = [];
+	@Input() columns: Column[] = [];
+	@Input() data!: Signal<T[]>;
 
-	get dataKeys(): string[] {
-		return Object.keys(this.columns);
+	getEntityFieldValue(entity: T, field: string): unknown {
+		return (entity as Record<string, unknown>)?.[field] ?? '';
 	}
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Signal, signal } from '@angular/core';
 
 @Component({
 	selector: 'd-card-component',
@@ -11,5 +11,5 @@ import { Component, Input } from '@angular/core';
 export class DCardComponent {
 	@Input() title: string = '';
 	@Input() icon: string = '';
-	@Input() inpactValue: string = '';
+	@Input() inpactValue!: Signal<string | number>;
 }

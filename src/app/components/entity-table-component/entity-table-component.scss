@@ -20,3 +20,21 @@ $colum-size: 100px;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, $colum-size);
 }
+
+.entity-table-container .body {
+	.col-size-sm {
+		width: auto;
+	}
+
+	.col-size-md {
+		width: auto;
+	}
+
+	.col-size-lg {
+		width: auto;
+	}
+
+	.col-size-auto {
+		max-width: 450px;
+	}
+}

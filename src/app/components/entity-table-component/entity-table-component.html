@@ -13,13 +13,23 @@
 		<table>
 			<thead>
 				<tr>
-					@for (columnKey of dataKeys; track columnKey) {
-						<th>{{ columns[columnKey] }}</th>
+					@for (column of columns; track column.key) {
+						<th [ngClass]="'col-size-' + column.size">{{ column.label }}</th>
 					}
 				</tr>
 				<th></th>
 			</thead>
-			<tbody></tbody>
+			<tbody>
+				@for (row of data(); track row) {
+					<tr>
+						@for (column of columns; track column.key) {
+							<td [ngClass]="'col-size-' + column.size">
+								{{ getEntityFieldValue(row, column.key) }}
+							</td>
+						}
+					</tr>
+				}
+			</tbody>
 		</table>
 	</div>
 </div>
