@@ -7,4 +7,5 @@
 	padding: map.get($space, sm) map.get($space, md);
 	box-sizing: border-box;
 	width: 100%;
+	height: map.get($layout, header);
 }

@@ -21,7 +21,9 @@ $colum-size: 100px;
 	grid-template-columns: repeat(auto-fit, $colum-size);
 }
 
-.entity-table-container .body {
+.entity-table-container .body table {
+	display: none;
+
 	.col-size-sm {
 		width: auto;
 	}
@@ -36,5 +38,19 @@ $colum-size: 100px;
 
 	.col-size-auto {
 		max-width: 450px;
+	}
+}
+
+.entity-table-container .list-view .list-entry {
+	padding: map.get($space, sm);
+}
+
+@media (min-width: map.get($device-size, md)) {
+	.entity-table-container .body table {
+		display: block;
+	}
+
+	.entity-table-container .body .list-view {
+		display: none;
 	}
 }

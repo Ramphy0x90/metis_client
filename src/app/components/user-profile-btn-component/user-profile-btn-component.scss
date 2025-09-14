@@ -3,7 +3,7 @@
 
 .user-profile-container {
 	position: relative;
-	padding: map.get($space, sm) map.get($space, md);
+
 	gap: map.get($space, sm);
 	border-radius: map.get($border, radius);
 
@@ -76,7 +76,11 @@
 }
 
 @media (min-width: map.get($device-size, md)) {
-	.user-profile-container .user-info {
-		display: block;
+	.user-profile-container {
+		padding: map.get($space, sm) map.get($space, md);
+
+		.user-info {
+			display: block;
+		}
 	}
 }

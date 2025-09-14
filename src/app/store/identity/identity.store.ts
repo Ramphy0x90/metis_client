@@ -22,6 +22,8 @@ export const IdentityStore = signalStore(
 
 	withComputed((store) => ({
 		userLabel: computed(() => `${store.name?.() ?? ''} ${store.surname?.() ?? ''}`.trim()),
+		// Users only have one role *_*
+		userMainRole: computed(() => store.roles()[0]),
 		authHeaders: computed<Record<string, string>>(() => {
 			const token = store.accessToken?.();
 			const type = store.tokenType?.();
@@ -164,8 +166,6 @@ export const IdentityStore = signalStore(
 					accessToken: store.accessToken?.(),
 					refreshToken: store.refreshToken?.(),
 					tokenType: store.tokenType?.(),
-					tenants: store.tenants?.(),
-					tenantsTotalCount: store.tenantsTotalCount?.(),
 				} as Partial<IdentityState>;
 				localStorage.setItem(STORE_FEATURE.IDENTITY, JSON.stringify(snapshot));
 			});

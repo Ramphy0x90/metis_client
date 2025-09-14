@@ -13,10 +13,16 @@
 	<div class="body flex">
 		<div class="info-cards flex">
 			<div class="info-row flex">
-				<d-card-component [title]="'Total Tenants'" [icon]="'bi-building'" [inpactValue]="'0'">
+				<d-card-component
+					[title]="'Total Tenants'"
+					[icon]="'bi-building'"
+					[inpactValue]="tenantsCount">
 				</d-card-component>
 
-				<d-card-component [title]="'Total Employees'" [icon]="'bi-people'" [inpactValue]="'0'">
+				<d-card-component
+					[title]="'Total Employees'"
+					[icon]="'bi-people'"
+					[inpactValue]="tenantsCount">
 				</d-card-component>
 			</div>
 
@@ -24,10 +30,13 @@
 				<d-card-component
 					[title]="'Active Bookings'"
 					[icon]="'bi-calendar4-week'"
-					[inpactValue]="'0'">
+					[inpactValue]="tenantsCount">
 				</d-card-component>
 
-				<d-card-component [title]="'Total Customers'" [icon]="'bi-people'" [inpactValue]="'0'">
+				<d-card-component
+					[title]="'Total Customers'"
+					[icon]="'bi-people'"
+					[inpactValue]="tenantsCount">
 				</d-card-component>
 			</div>
 		</div>
@@ -35,7 +44,8 @@
 		<div class="table-container">
 			<entity-table-component
 				[tableTitle]="'Tenants'"
-				[columns]="TENANTS_TABLE_COLUMNS"></entity-table-component>
+				[columns]="TENANTS_TABLE_COLUMNS"
+				[data]="tenants"></entity-table-component>
 		</div>
 	</div>
 </div>

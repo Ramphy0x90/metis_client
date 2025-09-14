@@ -16,7 +16,8 @@
 	padding-bottom: map.get($space, md);
 	border-radius: map.get($border, radius);
 	padding: map.get($space, md);
-	max-width: 400px;
+	max-width: map.get($space, nav-h-width);
+	height: map.get($space, nav-h-height);
 	color: map.get($light-colors, text);
 }
 
@@ -77,11 +78,11 @@
 	}
 
 	.navigation-container .nav-options.open {
-		width: map.get($space, nav);
+		width: map.get($layout, nav-v);
 	}
 
 	.navigation-container .nav-options.closed {
-		width: map.get($space, nav-collapsed);
+		width: map.get($layout, nav-v-collapsed);
 
 		&.nav-options .nav-option {
 			justify-content: center;

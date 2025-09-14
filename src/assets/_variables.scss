@@ -7,6 +7,15 @@ $device-size: (
 	xxl: 1400px,
 );
 
+$layout: (
+	header: 75px,
+	body: auto,
+	nav-v: 250px,
+	nav-v-collapsed: 56px,
+	nav-h-width: 400px,
+	nav-h-height: 80px,
+);
+
 $light-colors: (
 	primary: #4f46e5,
 	secondary: #f97316,
@@ -28,8 +37,6 @@ $space: (
 	md: 16px,
 	lg: 32px,
 	fake-center-bottom-push: 150px,
-	nav: 250px,
-	nav-collapsed: 56px,
 );
 
 $border: (

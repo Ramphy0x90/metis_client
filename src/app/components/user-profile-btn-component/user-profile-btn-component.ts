@@ -18,16 +18,13 @@ export class UserProfileBtnComponent {
 	username: Signal<string | null>;
 	userLabel: Signal<string | null>;
 	isUserAuthenticated: Signal<boolean>;
-
-	// Users only have one role *_*
-	roles: Signal<string[]>;
-	mainRole: Signal<string> = computed(() => this.roles()[0]);
+	mainRole: Signal<string>;
 
 	constructor(private elementRef: ElementRef) {
 		this.username = this.identityStore.username;
 		this.userLabel = this.identityStore.userLabel;
 		this.isUserAuthenticated = this.identityStore.isAuthenticated;
-		this.roles = this.identityStore.roles;
+		this.mainRole = this.identityStore.userMainRole;
 	}
 
 	@HostListener('document:click', ['$event'])

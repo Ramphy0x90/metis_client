@@ -20,7 +20,7 @@
 				<th></th>
 			</thead>
 			<tbody>
-				@for (row of data(); track row) {
+				@for (row of data(); track getEntityFieldValue(row, 'id')) {
 					<tr>
 						@for (column of columns; track column.key) {
 							<td [ngClass]="'col-size-' + column.size">
@@ -31,5 +31,11 @@
 				}
 			</tbody>
 		</table>
+
+		<div class="list-view">
+			@for (entry of data(); track getEntityFieldValue(entry, 'id')) {
+				<div class="list-entry">{{ getEntityFieldValue(entry, 'name') }}</div>
+			}
+		</div>
 	</div>
 </div>
