@@ -24,19 +24,19 @@ $colum-size: 100px;
 .entity-table-container .body table {
 	display: none;
 
-	.col-size-sm {
+	&.col-size-sm {
 		width: auto;
 	}
 
-	.col-size-md {
+	&.col-size-md {
 		width: auto;
 	}
 
-	.col-size-lg {
+	&.col-size-lg {
 		width: auto;
 	}
 
-	.col-size-auto {
+	&.col-size-auto {
 		max-width: 450px;
 	}
 }
@@ -47,7 +47,7 @@ $colum-size: 100px;
 
 @media (min-width: map.get($device-size, md)) {
 	.entity-table-container .body table {
-		display: block;
+		display: inline-table;
 	}
 
 	.entity-table-container .body .list-view {
