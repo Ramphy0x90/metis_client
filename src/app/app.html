@@ -1,4 +1,4 @@
-<div class="root-container h-full">
+<div class="root-container h-full" [class.auth-page]="!isUserAuthenticated()">
 	@if (isUserAuthenticated()) {
 		<header-component></header-component>
 	}

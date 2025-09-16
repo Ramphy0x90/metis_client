@@ -11,6 +11,7 @@ export class AuthGuard implements CanActivate {
 
 	constructor(private router: Router) {}
 
+	// TODO: To login page if token no valid
 	canActivate(): Observable<boolean> {
 		const isAuthenticated = this.identityStore.isAuthenticated();
 		if (!isAuthenticated) {
@@ -20,6 +21,7 @@ export class AuthGuard implements CanActivate {
 				subscriber.complete();
 			});
 		}
+
 		return new Observable<boolean>((subscriber) => {
 			subscriber.next(true);
 			subscriber.complete();

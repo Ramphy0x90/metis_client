@@ -10,6 +10,10 @@
 	grid-template-rows: map.get($layout, header) calc(100vh - map.get($layout, header));
 }
 
+.root-container.auth-page {
+	grid-template-rows: 100vh;
+}
+
 .root-container > .body {
 	display: flex;
 	flex-direction: column-reverse;
@@ -19,6 +23,10 @@
 ::ng-deep router-outlet + * {
 	width: 100%;
 	height: calc(100% - map.get($layout, nav-h-height));
+}
+
+.root-container.auth-page ::ng-deep router-outlet + * {
+	height: 100%;
 }
 
 @media (min-width: map.get($device-size, md)) {

@@ -10,6 +10,7 @@
 	</div>
 
 	<div class="body">
+		<!-- Desktop view -->
 		<table>
 			<thead>
 				<tr>
@@ -27,11 +28,37 @@
 								{{ getEntityFieldValue(row, column.key) }}
 							</td>
 						}
+
+						<td class="entity-actions">
+							<div class="entity-actions-container">
+								<i
+									class="bi bi-three-dots"
+									(click)="toggleEntityActions($event, getEntityFieldValue(row, 'id'))"></i>
+
+								@if (isEntityActionsVisible(getEntityFieldValue(row, 'id'))) {
+									<div class="actions-container flex flex-col" (click)="$event.stopPropagation()">
+										<div class="flex">
+											<i class="bi bi-eye"></i>
+											View
+										</div>
+										<div class="flex">
+											<i class="bi bi-pencil-square"></i>
+											Edit
+										</div>
+										<div class="flex">
+											<i class="bi bi-trash"></i>
+											Delete
+										</div>
+									</div>
+								}
+							</div>
+						</td>
 					</tr>
 				}
 			</tbody>
 		</table>
 
+		<!-- Mobile view -->
 		<div class="list-view">
 			@for (entry of data(); track getEntityFieldValue(entry, 'id')) {
 				<div class="list-entry">{{ getEntityFieldValue(entry, 'name') }}</div>

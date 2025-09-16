@@ -41,6 +41,44 @@ $colum-size: 100px;
 	}
 }
 
+.entity-table-container tr {
+	position: relative;
+}
+
+.entity-table-container .entity-actions {
+	position: static;
+}
+
+.entity-actions .entity-actions-container {
+	position: relative;
+}
+
+.entity-actions .entity-actions-container i {
+	cursor: pointer;
+}
+
+.entity-actions-container .actions-container {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	width: 160px;
+	background: map.get($light-colors, background);
+	border: 1px solid map.get($light-colors, border);
+	border-radius: map.get($border, radius);
+	padding: map.get($space, sm) map.get($space, md);
+	gap: map.get($space, sm);
+	z-index: 1000;
+}
+
+.entity-actions-container .actions-container > div {
+	gap: map.get($space, sm);
+	cursor: pointer;
+
+	&:hover {
+		color: map.get($light-colors, primary);
+	}
+}
+
 .entity-table-container .list-view .list-entry {
 	padding: map.get($space, sm);
 }
