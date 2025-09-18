@@ -1,4 +1,5 @@
 import { TenantResponse } from '../../types/tenant/tenant-response';
+import { UserResponse } from '../../types/user/user-response';
 
 export interface IdentityState {
 	username: string | null;
@@ -13,6 +14,8 @@ export interface IdentityState {
 	loading: boolean;
 	tenants: TenantResponse[];
 	tenantsTotalCount: number;
+	users: UserResponse[];
+	usersTotalCount: number;
 }
 
 export const initialIdentityState: IdentityState = {
@@ -28,4 +31,6 @@ export const initialIdentityState: IdentityState = {
 	loading: false,
 	tenants: [],
 	tenantsTotalCount: 0,
+	users: [],
+	usersTotalCount: 0,
 };

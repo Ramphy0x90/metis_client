@@ -32,6 +32,7 @@ export class App implements OnInit {
 					switch (this.identityStore.userMainRole()) {
 						case Role.GLOBAL_ADMIN:
 							this.identityStore.loadAllTenants();
+							this.identityStore.loadAllUsers();
 							break;
 						default:
 							break;

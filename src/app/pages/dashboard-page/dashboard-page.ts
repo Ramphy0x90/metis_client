@@ -13,8 +13,10 @@ export class DashboardPage {
 	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
 
 	tenantsCount: Signal<number>;
+	usersCount: Signal<number>;
 
 	constructor() {
 		this.tenantsCount = this.identityStore.tenantsTotalCount;
+		this.usersCount = this.identityStore.usersTotalCount;
 	}
 }

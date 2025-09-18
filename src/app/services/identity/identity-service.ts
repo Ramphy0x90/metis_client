@@ -5,6 +5,7 @@ import { AuthenticationResponse } from '../../types/identity/authentication-resp
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { environment } from '../../../environments/environment';
 import { AllTenantsResponse } from '../../types/tenant/all-tenants-response';
+import { AllUsersResponse } from '../../types/user/all-users-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,6 +13,7 @@ import { AllTenantsResponse } from '../../types/tenant/all-tenants-response';
 export class IdentityService {
 	readonly API_BASE_AUTH: string = `${environment.apiUrl}/auth`;
 	readonly API_BASE_TENANT: string = `${environment.apiUrl}/tenants`;
+	readonly API_BASE_USER: string = `${environment.apiUrl}/users`;
 
 	constructor(private httpClient: HttpClient) {}
 
@@ -27,5 +29,13 @@ export class IdentityService {
 
 	public getAllTenants(): Observable<AllTenantsResponse> {
 		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_TENANT}`);
+	}
+
+	public getAllUsers(): Observable<AllUsersResponse> {
+		return this.httpClient.get<AllUsersResponse>(`${this.API_BASE_USER}`);
+	}
+
+	public getAllUsersByTenantId(tenantId: string): Observable<AllTenantsResponse> {
+		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_USER}/${tenantId}`);
 	}
 }

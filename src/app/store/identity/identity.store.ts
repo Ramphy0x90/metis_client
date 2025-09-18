@@ -143,6 +143,25 @@ export const IdentityStore = signalStore(
 					),
 				),
 			),
+
+			loadAllUsers: rxMethod<void>((trigger$) =>
+				trigger$.pipe(
+					switchMap(() =>
+						identityService.getAllUsers().pipe(
+							tap((allUsersRes) => {
+								patchState(store, {
+									users: allUsersRes.tenants,
+									usersTotalCount: allUsersRes.totalCount,
+								});
+							}),
+							catchError(() => {
+								patchState(store, { users: [], usersTotalCount: 0 });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
 		};
 	}),
 
