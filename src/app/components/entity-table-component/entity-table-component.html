@@ -14,8 +14,10 @@
 		<table>
 			<thead>
 				<tr>
-					@for (column of columns; track column.key) {
-						<th [ngClass]="'col-size-' + column.size">{{ column.label }}</th>
+					@for (field of fields; track field.key) {
+						@if (isFieldVisible(field.visibility)) {
+							<th [ngClass]="'col-size-' + (field.size || 'auto')">{{ field.label }}</th>
+						}
 					}
 				</tr>
 				<th></th>
@@ -23,10 +25,12 @@
 			<tbody>
 				@for (row of data(); track getEntityFieldValue(row, 'id')) {
 					<tr>
-						@for (column of columns; track column.key) {
-							<td [ngClass]="'col-size-' + column.size">
-								{{ getEntityFieldValue(row, column.key) }}
-							</td>
+						@for (field of fields; track field.key) {
+							@if (isFieldVisible(field.visibility)) {
+								<td [ngClass]="'col-size-' + (field.size || 'auto')">
+									{{ getEntityFieldValue(row, field.key) }}
+								</td>
+							}
 						}
 
 						<td class="entity-actions">
@@ -36,16 +40,18 @@
 									(click)="toggleEntityActions($event, getEntityFieldValue(row, 'id'))"></i>
 
 								@if (isEntityActionsVisible(getEntityFieldValue(row, 'id'))) {
-									<div class="actions-container flex flex-col" (click)="$event.stopPropagation()">
-										<div class="flex">
+									<div
+										class="actions-container flex flex-col shadow-md"
+										(click)="$event.stopPropagation()">
+										<div class="flex" (click)="onView(row)">
 											<i class="bi bi-eye"></i>
 											View
 										</div>
-										<div class="flex">
+										<div class="flex" (click)="onEdit(row)">
 											<i class="bi bi-pencil-square"></i>
 											Edit
 										</div>
-										<div class="flex">
+										<div class="flex" (click)="onDelete(row)">
 											<i class="bi bi-trash"></i>
 											Delete
 										</div>

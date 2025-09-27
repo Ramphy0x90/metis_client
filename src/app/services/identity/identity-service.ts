@@ -6,6 +6,7 @@ import { AuthenticationRequest } from '../../types/identity/authentication-reque
 import { environment } from '../../../environments/environment';
 import { AllTenantsResponse } from '../../types/tenant/all-tenants-response';
 import { AllUsersResponse } from '../../types/user/all-users-response';
+import { TenantResponse } from '../../types/tenant/tenant-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -29,6 +30,18 @@ export class IdentityService {
 
 	public getAllTenants(): Observable<AllTenantsResponse> {
 		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_TENANT}`);
+	}
+
+	public createTenant(payload: Partial<TenantResponse>): Observable<TenantResponse> {
+		return this.httpClient.post<TenantResponse>(`${this.API_BASE_TENANT}`, payload);
+	}
+
+	public updateTenant(id: string, payload: Partial<TenantResponse>): Observable<TenantResponse> {
+		return this.httpClient.put<TenantResponse>(`${this.API_BASE_TENANT}/${id}`, payload);
+	}
+
+	public deleteTenant(id: string): Observable<void> {
+		return this.httpClient.delete<void>(`${this.API_BASE_TENANT}/${id}`);
 	}
 
 	public getAllUsers(): Observable<AllUsersResponse> {

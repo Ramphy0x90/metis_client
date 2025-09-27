@@ -1,0 +1,60 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+.entity-modal-container {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal-container {
+	background: map.get($light-colors, background);
+	border-radius: map.get($border, radius);
+	width: 640px;
+	max-width: calc(100vw - 32px);
+	max-height: calc(100vh - 32px);
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-header {
+	padding: 12px 16px;
+	border-bottom: 1px solid map.get($light-colors, border);
+}
+
+.modal-title {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.close-btn {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.modal-body {
+	padding: 16px;
+	overflow: auto;
+	gap: map.get($space, md);
+}
+
+.modal-body .field-row {
+	gap: map.get($space, sm);
+}
+
+.modal-footer {
+	padding: 12px 16px;
+	border-top: 1px solid map.get($light-colors, border);
+	gap: map.get($space, md);
+}
+
+.btn.primary {
+	background: map.get($light-colors, primary);
+	color: map.get($light-colors, text-light);
+	border-color: map.get($light-colors, primary);
+}

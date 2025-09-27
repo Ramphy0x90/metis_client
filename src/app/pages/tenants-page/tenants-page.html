@@ -3,7 +3,7 @@
 		<div class="page-title">Tenant Management</div>
 
 		<div class="context-actions">
-			<button class="create-tenant">
+			<button class="create-tenant" (click)="onCreateTenantClick()">
 				<i class="bi bi-plus-lg"></i>
 				Create Tenant
 			</button>
@@ -44,8 +44,27 @@
 		<div class="table-container">
 			<entity-table-component
 				[tableTitle]="'Tenants'"
-				[columns]="TENANTS_TABLE_COLUMNS"
-				[data]="tenants"></entity-table-component>
+				[fields]="TENANT_ENTITY_FIELDS"
+				[data]="tenants"
+				(viewEntity)="onViewTenant($event)"
+				(editEntity)="onEditTenant($event)"
+				(deleteEntity)="onDeleteTenant($event)"></entity-table-component>
 		</div>
 	</div>
 </div>
+
+<entity-modal-component
+	[title]="
+		modalMode() === 'create'
+			? 'Create Tenant'
+			: modalMode() === 'edit'
+				? 'Edit Tenant'
+				: 'Tenant Details'
+	"
+	[mode]="modalMode()"
+	[fields]="TENANT_ENTITY_FIELDS"
+	[value]="selectedTenant()"
+	[visible]="showModal()"
+	(cancel)="onModalCancel()"
+	(save)="onModalSave($event)">
+</entity-modal-component>

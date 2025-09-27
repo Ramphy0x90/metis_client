@@ -162,6 +162,58 @@ export const IdentityStore = signalStore(
 					),
 				),
 			),
+
+			createTenant: rxMethod<Partial<{ id: string; name: string; domain: string }>>((payload$) =>
+				payload$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((payload) =>
+						identityService.createTenant(payload).pipe(
+							tap((tenant) => {
+								const updated = [...store.tenants(), tenant];
+								patchState(store, {
+									tenants: updated,
+									tenantsTotalCount: store.tenantsTotalCount() + 1,
+									loading: false,
+									error: null,
+								});
+							}),
+							catchError((e) => {
+								patchState(store, { loading: false, error: e?.message || 'Create tenant failed' });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			updateTenant: rxMethod<{ id: string; changes: Partial<{ name: string; domain: string }> }>(
+				(payload$) =>
+					payload$.pipe(
+						tap(() => patchState(store, { loading: true, error: null })),
+						switchMap(({ id, changes }) =>
+							identityService.updateTenant(id, changes).pipe(
+								tap((updatedTenant) => {
+									const list = store.tenants();
+									const idx = list.findIndex((t) => t.id === id);
+									if (idx >= 0) {
+										const next = [...list];
+										next[idx] = updatedTenant;
+										patchState(store, { tenants: next, loading: false, error: null });
+									} else {
+										patchState(store, { loading: false, error: null });
+									}
+								}),
+								catchError((e) => {
+									patchState(store, {
+										loading: false,
+										error: e?.message || 'Update tenant failed',
+									});
+									return EMPTY;
+								}),
+							),
+						),
+					),
+			),
 		};
 	}),
 

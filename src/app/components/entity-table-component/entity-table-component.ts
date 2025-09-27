@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, signal, Signal, HostListener } from '@angular/core';
+import {
+	Component,
+	Input,
+	signal,
+	Signal,
+	HostListener,
+	Output,
+	EventEmitter,
+} from '@angular/core';
 import { InputWrapperComponent } from '../input-wrapper-component/input-wrapper-component';
-import { Column } from '../../types/entity-table/column';
+import { EntityField, EntityFieldVisiblity } from '../../types/entity/field';
+import { DbEntity } from '../../types/db-entity';
 
 @Component({
 	selector: 'entity-table-component',
@@ -10,14 +19,24 @@ import { Column } from '../../types/entity-table/column';
 	styleUrl: './entity-table-component.scss',
 	standalone: true,
 })
-export class EntityTableComponent<T> {
+export class EntityTableComponent<T extends DbEntity & Record<string, unknown>> {
+	readonly EntityFieldVisiblity = EntityFieldVisiblity;
+
 	@Input() tableTitle: string = '';
 
 	// Data label by data key
-	@Input() columns: Column[] = [];
+	@Input() fields: EntityField[] = [];
 	@Input() data!: Signal<T[]>;
 
+	@Output() viewEntity = new EventEmitter<T>();
+	@Output() editEntity = new EventEmitter<T>();
+	@Output() deleteEntity = new EventEmitter<T>();
+
 	entityActionsVisibleForId: unknown | null = null;
+
+	isFieldVisible(visibility: EntityFieldVisiblity): boolean {
+		return [EntityFieldVisiblity.TABLE, EntityFieldVisiblity.ALL].includes(visibility);
+	}
 
 	getEntityFieldValue(entity: T, field: string): unknown {
 		return (entity as Record<string, unknown>)?.[field] ?? '';
@@ -37,5 +56,17 @@ export class EntityTableComponent<T> {
 		if (this.entityActionsVisibleForId !== null) {
 			this.entityActionsVisibleForId = null;
 		}
+	}
+
+	onView(entity: T): void {
+		this.viewEntity.emit(entity);
+	}
+
+	onEdit(entity: T): void {
+		this.editEntity.emit(entity);
+	}
+
+	onDelete(entity: T): void {
+		this.deleteEntity.emit(entity);
 	}
 }

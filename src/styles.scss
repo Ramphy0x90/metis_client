@@ -33,6 +33,7 @@ button {
 	border: none !important;
 	border-radius: map.get($border, radius) !important;
 	cursor: pointer !important;
+	padding: map.get($space, sm) map.get($space, md);
 }
 
 input {
@@ -43,4 +44,9 @@ input {
 		color: map.get($light-colors, text-neutral);
 		font-size: small;
 	}
+}
+
+input:disabled {
+	background-color: map.get($light-colors, foreground-light);
+	color: map.get($light-colors, text-neutral);
 }

@@ -1,0 +1,49 @@
+@if (visible) {
+	<div class="entity-modal-container" (click)="onOverlayClick($event)">
+		<div class="modal-container" (click)="$event.stopPropagation()">
+			<div class="modal-header flex justify-between">
+				<div class="modal-title flex items-center">{{ title }}</div>
+
+				<button class="close-btn" (click)="cancel.emit()">
+					<i class="bi bi-x-lg"></i>
+				</button>
+			</div>
+
+			<div class="modal-body flex flex-col">
+				@for (field of fields; track field.key) {
+					<div class="field-row flex flex-col">
+						@if (isFieldVisible(field.visibility)) {
+							<label>{{ field.label }}</label>
+
+							<input-wrapper [prefixIcon]="getFieldIcon(field.type)">
+								@if (field.type === 'textarea') {
+									<textarea
+										[placeholder]="field.placeholder || ''"
+										[ngModel]="getFieldValue(field.key)"
+										[disabled]="isReadOnly"
+										(ngModelChange)="setFieldValue(field.key, $event)"></textarea>
+								} @else {
+									<input
+										[type]="field.type || 'text'"
+										[disabled]="isReadOnly"
+										[placeholder]="field.placeholder || ''"
+										[ngModel]="getFieldValue(field.key)"
+										(ngModelChange)="setFieldValue(field.key, $event)" />
+								}
+							</input-wrapper>
+						}
+					</div>
+				}
+			</div>
+
+			<div class="modal-footer flex justify-end">
+				<button class="btn cancel" (click)="cancel.emit()">
+					{{ isReadOnly ? 'Close' : 'Cancel' }}
+				</button>
+				@if (!isReadOnly) {
+					<button class="btn primary" (click)="onSave()">Save</button>
+				}
+			</div>
+		</div>
+	</div>
+}

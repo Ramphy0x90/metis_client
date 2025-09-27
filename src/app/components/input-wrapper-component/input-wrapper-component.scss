@@ -19,6 +19,7 @@
 .input-wrapper-container ::ng-deep input {
 	width: 100%;
 	border: none !important;
+	border-radius: 0 map.get($border, radius) map.get($border, radius) 0;
 
 	&:focus {
 		outline: none;
