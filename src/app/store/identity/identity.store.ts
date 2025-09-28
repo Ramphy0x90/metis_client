@@ -20,21 +20,21 @@ import { STORE_FEATURE } from '../features';
 export const IdentityStore = signalStore(
 	withState<IdentityState>(initialIdentityState),
 
-    withComputed((store) => ({
+	withComputed((store) => ({
 		userLabel: computed(() => `${store.name?.() ?? ''} ${store.surname?.() ?? ''}`.trim()),
 		// Users only have one role *_*
-		userMainRole: computed(() => store.roles()[0]),
+		userMainRole: computed(() => store.roles()?.[0] || 'Unknown role wtf?'),
 		authHeaders: computed<Record<string, string>>(() => {
 			const token = store.accessToken?.();
 			const type = store.tokenType?.();
 			return token && type ? { Authorization: `${type} ${token}` } : ({} as Record<string, string>);
-        }),
-        tenantsTotalEmployees: computed(() =>
-            (store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.employeeCount ?? 0), 0),
-        ),
-        tenantsTotalCustomers: computed(() =>
-            (store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.customerCount ?? 0), 0),
-        ),
+		}),
+		tenantsTotalEmployees: computed(() =>
+			(store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.employeeCount ?? 0), 0),
+		),
+		tenantsTotalCustomers: computed(() =>
+			(store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.customerCount ?? 0), 0),
+		),
 	})),
 
 	withMethods((store, identityService = inject(IdentityService), router = inject(Router)) => {
@@ -217,10 +217,10 @@ export const IdentityStore = signalStore(
 									return EMPTY;
 								}),
 							),
+						),
 					),
-				),
 			),
-			
+
 			deleteTenant: rxMethod<string>((id$) =>
 				id$.pipe(
 					tap(() => patchState(store, { loading: true, error: null })),
