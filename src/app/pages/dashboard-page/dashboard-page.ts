@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { DCardComponent } from '../../components/d-card-component/d-card-component';
 import { IdentityStore } from '../../store/identity';
+import { LogsViewer } from '../../components/logs-viewer/logs-viewer';
 
 @Component({
 	selector: 'app-dashboard-page',
-	imports: [CommonModule, DCardComponent],
+	imports: [CommonModule, DCardComponent, LogsViewer, LogsViewer],
 	templateUrl: './dashboard-page.html',
 	styleUrl: './dashboard-page.scss',
 })

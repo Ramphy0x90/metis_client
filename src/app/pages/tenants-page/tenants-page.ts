@@ -100,8 +100,9 @@ export class TenantsPage {
 		this.showModal.set(true);
 	}
 
-	onDeleteTenant(_tenant: TenantResponse): void {
-		// TODO: Implement delete when backend available
+	onDeleteTenant(tenant: TenantResponse): void {
+		if (!tenant?.id) return;
+		this.identityStore.deleteTenant(tenant.id);
 	}
 
 	onModalCancel(): void {

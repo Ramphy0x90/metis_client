@@ -1,0 +1,67 @@
+<div class="log-viewer-container flex flex-col">
+	<div class="header flex flex-col">
+		<div class="title">Recent Activity</div>
+
+		<div class="controls flex flex-row items-center">
+			<label class="fetch-mode-selector">
+				Mode:
+
+				<select [ngModel]="mode()" (ngModelChange)="mode.set($event); page.set(0)">
+					<option value="latest">Latest</option>
+					<option value="range">Date range</option>
+				</select>
+			</label>
+
+			@if (mode() === 'range') {
+				<div class="date-ranges-controls flex flex-row items-center">
+					<button class="last-24h" (click)="setLastDay()">Last 24h</button>
+
+					<label>
+						<span>Start: </span>
+						<input type="date" [ngModel]="start()" (ngModelChange)="start.set($event)" />
+					</label>
+
+					<label>
+						<span>End: </span>
+						<input type="date" [ngModel]="end()" (ngModelChange)="end.set($event)" />
+					</label>
+				</div>
+			}
+		</div>
+	</div>
+
+	@if (logs().length) {
+		<table class="logs-table">
+			<thead>
+				<tr>
+					<th>Timestamp</th>
+					<th>Performed By</th>
+					<th>Operation</th>
+					<th>Entity Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (log of logs(); track log.id) {
+					<tr>
+						<td>{{ log.timestamp | date: 'short' }}</td>
+						<td>{{ log.performedBy }}</td>
+						<td [ngClass]="'operation-' + log.operation.toLowerCase()">{{ log.operation }}</td>
+						<td>{{ log.entityType }}</td>
+						<td>{{ log.description }}</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	} @else {
+		<div class="empty">No logs for selected range.</div>
+	}
+
+	@if (totalPages() > 1) {
+		<div class="pagination">
+			<button (click)="prevPage()" [disabled]="!canPrev()">Prev</button>
+			<span>Page {{ page() + 1 }} of {{ totalPages() }}</span>
+			<button (click)="nextPage()" [disabled]="!canNext()">Next</button>
+		</div>
+	}
+</div>

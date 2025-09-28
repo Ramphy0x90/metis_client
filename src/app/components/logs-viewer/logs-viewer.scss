@@ -1,0 +1,84 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+.log-viewer-container {
+	border: 1px solid map.get($light-colors, border);
+	border-radius: map.get($border, radius);
+	padding: map.get($space, md);
+	gap: map.get($space, md);
+
+	.header {
+		gap: map.get($space, md);
+
+		.title {
+			font-weight: 600;
+			font-size: larger;
+		}
+	}
+
+	.header .controls {
+		gap: map.get($space, md);
+
+		.fetch-mode-selector {
+			padding: map.get($space, sm);
+			border-radius: map.get($border, radius);
+			background-color: map.get($light-colors, foreground-light);
+		}
+
+		.date-ranges-controls {
+			gap: map.get($space, md);
+
+			label span {
+				color: map.get($light-colors, primary);
+				font-size: medium;
+			}
+
+			input {
+				color: map.get($light-colors, text-neutral);
+				font-size: smaller;
+			}
+
+			button.last-24h {
+				background-color: map.get($light-colors, primary);
+				padding: map.get($space, xsm) map.get($space, sm);
+				color: map.get($light-colors, text-light);
+			}
+		}
+	}
+
+	.logs-table {
+		width: 100%;
+		border-collapse: collapse;
+
+		th,
+		td {
+			border-bottom: 1px solid map.get($light-colors, border);
+			padding: map.get($space, sm);
+			text-align: left;
+		}
+
+		.operation-create {
+			color: map.get($light-colors, success);
+		}
+
+		.operation-update {
+			color: map.get($light-colors, warning);
+		}
+
+		.operation-delete {
+			color: map.get($light-colors, alert);
+		}
+	}
+
+	.pagination {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 10px;
+	}
+
+	.empty {
+		color: map.get($light-colors, text-neutral);
+		font-style: italic;
+	}
+}

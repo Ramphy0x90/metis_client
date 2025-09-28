@@ -211,8 +211,34 @@ export const IdentityStore = signalStore(
 									return EMPTY;
 								}),
 							),
+					),
+				),
+			),
+			
+			deleteTenant: rxMethod<string>((id$) =>
+				id$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((id) =>
+						identityService.deleteTenant(id).pipe(
+							tap(() => {
+								const filtered = store.tenants().filter((t) => t.id !== id);
+								patchState(store, {
+									tenants: filtered,
+									tenantsTotalCount: Math.max(0, store.tenantsTotalCount() - 1),
+									loading: false,
+									error: null,
+								});
+							}),
+							catchError((e) => {
+								patchState(store, {
+									loading: false,
+									error: e?.message || 'Delete tenant failed',
+								});
+								return EMPTY;
+							}),
 						),
 					),
+				),
 			),
 		};
 	}),

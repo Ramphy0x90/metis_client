@@ -31,9 +31,13 @@ $light-colors: (
 	border: #d8dbe6,
 
 	alert: #ef4444,
+	warning: #efb944,
+	success: #90dc84,
+	info: #44a5ef,
 );
 
 $space: (
+	xsm: 4px,
 	sm: 8px,
 	md: 16px,
 	lg: 32px,
