@@ -46,7 +46,7 @@ export class TenantsPage {
 			required: true,
 		},
 		{
-			key: 'employees',
+			key: 'employeeCount',
 			label: 'Employees',
 			type: EntityFieldType.NUMBER,
 			size: EntityFieldSize.SM,
@@ -66,6 +66,8 @@ export class TenantsPage {
 	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
 	tenants: Signal<TenantResponse[]>;
 	tenantsCount: Signal<number>;
+	employeesCount: Signal<number>;
+	customersCount: Signal<number>;
 
 	showModal = signal<boolean>(false);
 	modalMode = signal<'create' | 'view' | 'edit'>('create');
@@ -74,6 +76,8 @@ export class TenantsPage {
 	constructor() {
 		this.tenants = this.identityStore.tenants;
 		this.tenantsCount = this.identityStore.tenantsTotalCount;
+		this.employeesCount = this.identityStore.tenantsTotalEmployees;
+		this.customersCount = this.identityStore.tenantsTotalCustomers;
 	}
 
 	onCreateTenantClick(): void {
@@ -82,6 +86,8 @@ export class TenantsPage {
 			id: '',
 			name: '',
 			domain: '',
+			employeeCount: 0,
+			customerCount: 0,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
