@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthenticationResponse } from '../../types/identity/authentication-response';
@@ -28,8 +28,14 @@ export class IdentityService {
 		});
 	}
 
-	public getAllTenants(): Observable<AllTenantsResponse> {
-		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_TENANT}`);
+	public getAllTenants(page: number, size: number, sort?: string): Observable<AllTenantsResponse> {
+		let params = new HttpParams().set('page', String(page)).set('size', String(size));
+
+		if (sort) {
+			params = params.set('sort', sort);
+		}
+
+		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_TENANT}`, { params });
 	}
 
 	public createTenant(payload: Partial<TenantResponse>): Observable<TenantResponse> {
@@ -44,8 +50,14 @@ export class IdentityService {
 		return this.httpClient.delete<void>(`${this.API_BASE_TENANT}/${id}`);
 	}
 
-	public getAllUsers(): Observable<AllUsersResponse> {
-		return this.httpClient.get<AllUsersResponse>(`${this.API_BASE_USER}`);
+	public getAllUsers(page: number, size: number, sort?: string): Observable<AllUsersResponse> {
+		let params = new HttpParams().set('page', String(page)).set('size', String(size));
+
+		if (sort) {
+			params = params.set('sort', sort);
+		}
+
+		return this.httpClient.get<AllUsersResponse>(`${this.API_BASE_USER}`, { params });
 	}
 
 	public getAllUsersByTenantId(tenantId: string): Observable<AllTenantsResponse> {

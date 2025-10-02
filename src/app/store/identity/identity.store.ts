@@ -134,7 +134,8 @@ export const IdentityStore = signalStore(
 			loadAllTenants: rxMethod<void>((trigger$) =>
 				trigger$.pipe(
 					switchMap(() =>
-						identityService.getAllTenants().pipe(
+						// TODO: Implemenet pagination @_@
+						identityService.getAllTenants(0, 100, 'timestamp,DESC').pipe(
 							tap((allTenantsRes) => {
 								patchState(store, {
 									tenants: allTenantsRes.tenants,
@@ -153,7 +154,8 @@ export const IdentityStore = signalStore(
 			loadAllUsers: rxMethod<void>((trigger$) =>
 				trigger$.pipe(
 					switchMap(() =>
-						identityService.getAllUsers().pipe(
+						// TODO: Implemenet pagination @_@
+						identityService.getAllUsers(0, 100, 'timestamp,DESC').pipe(
 							tap((allUsersRes) => {
 								patchState(store, {
 									users: allUsersRes.tenants,
