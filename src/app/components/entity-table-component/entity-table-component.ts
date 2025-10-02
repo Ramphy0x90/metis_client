@@ -8,13 +8,15 @@ import {
 	Output,
 	EventEmitter,
 } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputWrapperComponent } from '../input-wrapper-component/input-wrapper-component';
 import { EntityField, EntityFieldVisiblity } from '../../types/entity/field';
 import { DbEntity } from '../../types/db-entity';
 
 @Component({
 	selector: 'entity-table-component',
-	imports: [CommonModule, InputWrapperComponent],
+	imports: [CommonModule, InputWrapperComponent, ReactiveFormsModule],
 	templateUrl: './entity-table-component.html',
 	styleUrl: './entity-table-component.scss',
 	standalone: true,
@@ -31,6 +33,15 @@ export class EntityTableComponent<T extends DbEntity & Record<string, unknown>> 
 	@Output() viewEntity = new EventEmitter<T>();
 	@Output() editEntity = new EventEmitter<T>();
 	@Output() deleteEntity = new EventEmitter<T>();
+	@Output() search = new EventEmitter<string>();
+
+	searchControl = new FormControl<string>('');
+
+	constructor() {
+		this.searchControl.valueChanges
+			.pipe(debounceTime(150), distinctUntilChanged())
+			.subscribe((value) => this.search.emit((value ?? '').trim()));
+	}
 
 	entityActionsVisibleForId: unknown | null = null;
 

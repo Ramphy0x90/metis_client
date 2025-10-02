@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { AuthenticationResponse } from '../../types/identity/authentication-response';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { environment } from '../../../environments/environment';
-import { AllTenantsResponse } from '../../types/tenant/all-tenants-response';
-import { AllUsersResponse } from '../../types/user/all-users-response';
 import { TenantResponse } from '../../types/tenant/tenant-response';
+import { DbPage } from '../../types/db-page';
+import { UserResponse } from '../../types/user/user-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -28,14 +28,35 @@ export class IdentityService {
 		});
 	}
 
-	public getAllTenants(page: number, size: number, sort?: string): Observable<AllTenantsResponse> {
+	public getAllTenants(
+		page: number,
+		size: number,
+		sort?: string,
+	): Observable<DbPage<TenantResponse>> {
 		let params = new HttpParams().set('page', String(page)).set('size', String(size));
 
 		if (sort) {
 			params = params.set('sort', sort);
 		}
 
-		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_TENANT}`, { params });
+		return this.httpClient.get<DbPage<TenantResponse>>(`${this.API_BASE_TENANT}`, { params });
+	}
+
+	public searchTenant(
+		q: string,
+		page: number,
+		size: number,
+		sort?: string,
+	): Observable<DbPage<TenantResponse>> {
+		let params = new HttpParams().set('q', q).set('page', String(page)).set('size', String(size));
+
+		if (sort) {
+			params = params.set('sort', sort);
+		}
+
+		return this.httpClient.get<DbPage<TenantResponse>>(`${this.API_BASE_TENANT}/search`, {
+			params,
+		});
 	}
 
 	public createTenant(payload: Partial<TenantResponse>): Observable<TenantResponse> {
@@ -50,17 +71,17 @@ export class IdentityService {
 		return this.httpClient.delete<void>(`${this.API_BASE_TENANT}/${id}`);
 	}
 
-	public getAllUsers(page: number, size: number, sort?: string): Observable<AllUsersResponse> {
+	public getAllUsers(page: number, size: number, sort?: string): Observable<DbPage<UserResponse>> {
 		let params = new HttpParams().set('page', String(page)).set('size', String(size));
 
 		if (sort) {
 			params = params.set('sort', sort);
 		}
 
-		return this.httpClient.get<AllUsersResponse>(`${this.API_BASE_USER}`, { params });
+		return this.httpClient.get<DbPage<UserResponse>>(`${this.API_BASE_USER}`, { params });
 	}
 
-	public getAllUsersByTenantId(tenantId: string): Observable<AllTenantsResponse> {
-		return this.httpClient.get<AllTenantsResponse>(`${this.API_BASE_USER}/${tenantId}`);
+	public getAllUsersByTenantId(tenantId: string): Observable<DbPage<UserResponse>> {
+		return this.httpClient.get<DbPage<UserResponse>>(`${this.API_BASE_USER}/${tenantId}`);
 	}
 }

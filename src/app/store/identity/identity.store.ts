@@ -135,11 +135,11 @@ export const IdentityStore = signalStore(
 				trigger$.pipe(
 					switchMap(() =>
 						// TODO: Implemenet pagination @_@
-						identityService.getAllTenants(0, 100, 'timestamp,DESC').pipe(
+						identityService.getAllTenants(0, 100, 'updatedAt,ASC').pipe(
 							tap((allTenantsRes) => {
 								patchState(store, {
-									tenants: allTenantsRes.tenants,
-									tenantsTotalCount: allTenantsRes.totalCount,
+									tenants: allTenantsRes.content,
+									tenantsTotalCount: allTenantsRes.totalElements,
 								});
 							}),
 							catchError(() => {
@@ -151,15 +151,35 @@ export const IdentityStore = signalStore(
 				),
 			),
 
+			searchTenants: rxMethod<{ q: string; page?: number; size?: number; sort?: string }>(
+				(params$) =>
+					params$.pipe(
+						switchMap(({ q, page = 0, size = 100, sort = 'updatedAt,ASC' }) =>
+							identityService.searchTenant(q, page, size, sort).pipe(
+								tap((results) => {
+									patchState(store, {
+										tenants: results.content,
+										tenantsTotalCount: results?.totalElements ?? 0,
+									});
+								}),
+								catchError(() => {
+									patchState(store, { tenants: [], tenantsTotalCount: 0 });
+									return EMPTY;
+								}),
+							),
+						),
+					),
+			),
+
 			loadAllUsers: rxMethod<void>((trigger$) =>
 				trigger$.pipe(
 					switchMap(() =>
 						// TODO: Implemenet pagination @_@
-						identityService.getAllUsers(0, 100, 'timestamp,DESC').pipe(
+						identityService.getAllUsers(0, 100, 'updatedAt,ASC').pipe(
 							tap((allUsersRes) => {
 								patchState(store, {
-									users: allUsersRes.tenants,
-									usersTotalCount: allUsersRes.totalCount,
+									users: allUsersRes.content,
+									usersTotalCount: allUsersRes.totalElements,
 								});
 							}),
 							catchError(() => {

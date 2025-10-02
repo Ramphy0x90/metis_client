@@ -80,6 +80,17 @@ export class TenantsPage {
 		this.customersCount = this.identityStore.tenantsTotalCustomers;
 	}
 
+	onSearchTenants(query: string): void {
+		const q = (query ?? '').trim();
+
+		if (q.length === 0) {
+			this.identityStore.loadAllTenants();
+			return;
+		}
+
+		this.identityStore.searchTenants({ q });
+	}
+
 	onCreateTenantClick(): void {
 		this.modalMode.set('create');
 		this.selectedTenant.set({

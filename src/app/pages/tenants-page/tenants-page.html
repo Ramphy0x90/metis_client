@@ -46,6 +46,7 @@
 				[tableTitle]="'Tenants'"
 				[fields]="TENANT_ENTITY_FIELDS"
 				[data]="tenants"
+				(search)="onSearchTenants($event)"
 				(viewEntity)="onViewTenant($event)"
 				(editEntity)="onEditTenant($event)"
 				(deleteEntity)="onDeleteTenant($event)"></entity-table-component>
