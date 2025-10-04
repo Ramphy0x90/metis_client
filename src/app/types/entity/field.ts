@@ -1,3 +1,5 @@
+import { Signal } from '@angular/core';
+
 export enum EntityFieldVisiblity {
 	TABLE = 'table',
 	FORM = 'form',
@@ -16,6 +18,9 @@ export enum EntityFieldType {
 	NUMBER = 'number',
 	EMAIL = 'email',
 	TEXTAREA = 'textarea',
+	PASSWORD = 'password',
+	LOOKUP = 'lookup',
+	DROPDOWN = 'dropdown',
 }
 
 export type EntityField = {
@@ -24,6 +29,8 @@ export type EntityField = {
 	type: EntityFieldType;
 	size: EntityFieldSize;
 	visibility: EntityFieldVisiblity;
-	required: boolean;
 	placeholder?: string;
+	lookupDataID?: string;
+	dropdownDataSourceID?: string;
+	dropdownDataLabelID?: string;
 };

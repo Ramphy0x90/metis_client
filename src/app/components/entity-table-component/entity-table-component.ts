@@ -7,6 +7,7 @@ import {
 	HostListener,
 	Output,
 	EventEmitter,
+	computed,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -29,6 +30,7 @@ export class EntityTableComponent<T extends DbEntity & Record<string, unknown>> 
 	// Data label by data key
 	@Input() fields: EntityField[] = [];
 	@Input() data!: Signal<T[]>;
+	@Input() lookupData?: Signal<Record<string, unknown>>;
 
 	@Output() viewEntity = new EventEmitter<T>();
 	@Output() editEntity = new EventEmitter<T>();
@@ -51,6 +53,16 @@ export class EntityTableComponent<T extends DbEntity & Record<string, unknown>> 
 
 	getEntityFieldValue(entity: T, field: string): unknown {
 		return (entity as Record<string, unknown>)?.[field] ?? '';
+	}
+
+	getEntityFieldValueByField(entity: T, field: EntityField): unknown {
+		if (field.lookupDataID && this.lookupData) {
+			const dataKey = ((entity as Record<string, unknown>)?.[field.key] ?? '') as string;
+			const data = computed(() => this.lookupData?.()[dataKey]);
+			return (data?.() as Record<string, unknown>)?.[field.lookupDataID];
+		}
+
+		return (entity as Record<string, unknown>)?.[field.key] ?? '';
 	}
 
 	toggleEntityActions(event: MouseEvent, entityId: unknown): void {

@@ -10,28 +10,37 @@
 			</div>
 
 			<div class="modal-body flex flex-col">
-				@for (field of fields; track field.key) {
+				@for (field of visibleFields(); track field.key) {
 					<div class="field-row flex flex-col">
-						@if (isFieldVisible(field.visibility)) {
-							<label>{{ field.label }}</label>
+						<label>{{ field.label }}</label>
 
-							<input-wrapper [prefixIcon]="getFieldIcon(field.type)">
-								@if (field.type === 'textarea') {
-									<textarea
-										[placeholder]="field.placeholder || ''"
-										[ngModel]="getFieldValue(field.key)"
-										[disabled]="isReadOnly"
-										(ngModelChange)="setFieldValue(field.key, $event)"></textarea>
-								} @else {
-									<input
-										[type]="field.type || 'text'"
-										[disabled]="isReadOnly"
-										[placeholder]="field.placeholder || ''"
-										[ngModel]="getFieldValue(field.key)"
-										(ngModelChange)="setFieldValue(field.key, $event)" />
-								}
-							</input-wrapper>
-						}
+						<input-wrapper [prefixIcon]="getFieldIcon(field.type)">
+							@if (field.type === 'textarea') {
+								<textarea
+									[placeholder]="field.placeholder || ''"
+									[ngModel]="getFieldValue(field.key)"
+									[disabled]="isReadOnly"
+									(ngModelChange)="setFieldValue(field.key, $event)"
+									autocomplete="off">
+								</textarea>
+							} @else if (field.type === 'dropdown' && ['create', 'edit'].includes(mode)) {
+								<select
+									[ngModel]="getFieldValue(field.key)"
+									(ngModelChange)="setFieldValue(field.key, [$event])">
+									@for (opt of getDropdownOptions(field); track opt.id) {
+										<option [value]="opt.id">{{ getDropdownOptLabel(opt, field) }}</option>
+									}
+								</select>
+							} @else {
+								<input
+									[type]="field.type || 'text'"
+									[autocomplete]="field.type === 'password' ? 'new-password' : 'off'"
+									[disabled]="isReadOnly"
+									[placeholder]="field.placeholder || ''"
+									[ngModel]="getFieldValue(field.key)"
+									(ngModelChange)="setFieldValue(field.key, $event)" />
+							}
+						</input-wrapper>
 					</div>
 				}
 			</div>

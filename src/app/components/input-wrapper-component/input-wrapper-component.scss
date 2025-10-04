@@ -16,14 +16,17 @@
 	color: map.get($light-colors, text);
 }
 
-.input-wrapper-container ::ng-deep input {
-	width: 100%;
-	border: none !important;
-	border-radius: 0 map.get($border, radius) map.get($border, radius) 0;
+.input-wrapper-container ::ng-deep {
+	input,
+	select {
+		width: 100%;
+		border: none !important;
+		border-radius: 0 map.get($border, radius) map.get($border, radius) 0;
 
-	&:focus {
-		outline: none;
-		border: none;
-		box-shadow: none;
+		&:focus {
+			outline: none;
+			border: none;
+			box-shadow: none;
+		}
 	}
 }

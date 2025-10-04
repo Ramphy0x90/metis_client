@@ -1,3 +1,64 @@
 <div class="users-page page-container">
-	<p>users-page works!</p>
+	<div class="header">
+		<div class="page-title">User Management</div>
+
+		<div class="context-actions">
+			<button class="create-user" (click)="onCreateUserClick()">
+				<i class="bi bi-plus-lg"></i>
+				Create User
+			</button>
+		</div>
+	</div>
+
+	<div class="body flex">
+		<div class="info-cards flex">
+			<div class="info-row flex">
+				<d-card-component [title]="'Total Users'" [icon]="'bi-building'" [inpactValue]="usersCount">
+				</d-card-component>
+
+				<d-card-component [title]="'Total Admins'" [icon]="'bi-people'" [inpactValue]="adminsCount">
+				</d-card-component>
+			</div>
+
+			<div class="info-row flex">
+				<d-card-component
+					[title]="'Total Employees'"
+					[icon]="'bi-people'"
+					[inpactValue]="employeesCount">
+				</d-card-component>
+
+				<d-card-component
+					[title]="'Total Customers'"
+					[icon]="'bi-people'"
+					[inpactValue]="customersCount">
+				</d-card-component>
+			</div>
+		</div>
+
+		<div class="table-container">
+			<entity-table-component
+				[tableTitle]="'Users'"
+				[fields]="USER_ENTITY_FIELDS"
+				[data]="users"
+				[lookupData]="lookupData"
+				(search)="onSearchUsers($event)"
+				(viewEntity)="onViewUser($event)"
+				(editEntity)="onEditUser($event)"
+				(deleteEntity)="onDeleteUser($event)">
+			</entity-table-component>
+		</div>
+	</div>
 </div>
+
+<entity-modal-component
+	[title]="
+		modalMode() === 'create' ? 'Create User' : modalMode() === 'edit' ? 'Edit User' : 'User Details'
+	"
+	[mode]="modalMode()"
+	[fields]="USER_ENTITY_FIELDS"
+	[value]="selectedUser()"
+	[visible]="showModal()"
+	[dropdownData]="dropdownOptions"
+	(cancel)="onModalCancel()"
+	(save)="onModalSave($event)">
+</entity-modal-component>

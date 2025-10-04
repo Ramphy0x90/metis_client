@@ -28,7 +28,7 @@
 						@for (field of fields; track field.key) {
 							@if (isFieldVisible(field.visibility)) {
 								<td [ngClass]="'col-size-' + (field.size || 'auto')">
-									{{ getEntityFieldValue(row, field.key) }}
+									{{ getEntityFieldValueByField(row, field) }}
 								</td>
 							}
 						}

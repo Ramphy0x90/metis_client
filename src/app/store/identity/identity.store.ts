@@ -16,6 +16,9 @@ import { AuthenticationRequest } from '../../types/identity/authentication-reque
 import { catchError, tap } from 'rxjs/operators';
 import { EMPTY, switchMap, Observable } from 'rxjs';
 import { STORE_FEATURE } from '../features';
+import { Role } from '../../types/identity/roles';
+import { UserCreateRequest } from '../../types/user/user-create-request';
+import { UserUpdateRequest } from '../../types/user/user-update-request';
 
 export const IdentityStore = signalStore(
 	withState<IdentityState>(initialIdentityState),
@@ -24,11 +27,20 @@ export const IdentityStore = signalStore(
 		userLabel: computed(() => `${store.name?.() ?? ''} ${store.surname?.() ?? ''}`.trim()),
 		// Users only have one role *_*
 		userMainRole: computed(() => store.roles()?.[0] || 'Unknown role wtf?'),
+		roleOptions: computed(() =>
+			(store.availableRoles?.() ?? []).map((r) => ({
+				id: r,
+				label: (Role as Record<string, string>)[r] ?? r,
+			})),
+		),
 		authHeaders: computed<Record<string, string>>(() => {
 			const token = store.accessToken?.();
 			const type = store.tokenType?.();
 			return token && type ? { Authorization: `${type} ${token}` } : ({} as Record<string, string>);
 		}),
+		tenantsTotalAdmins: computed(() =>
+			(store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.adminCount ?? 0), 0),
+		),
 		tenantsTotalEmployees: computed(() =>
 			(store.tenants?.() ?? []).reduce((sum, tenant) => sum + (tenant?.employeeCount ?? 0), 0),
 		),
@@ -51,6 +63,19 @@ export const IdentityStore = signalStore(
 		});
 
 		return {
+			loadUserRoles: rxMethod<void>((trigger$) =>
+				trigger$.pipe(
+					switchMap(() =>
+						identityService.getUserRoles().pipe(
+							tap((roles) => patchState(store, { availableRoles: roles })),
+							catchError(() => {
+								patchState(store, { availableRoles: [] });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
 			login: rxMethod<AuthenticationRequest>((credentials$: Observable<AuthenticationRequest>) =>
 				credentials$.pipe(
 					tap(() => patchState(store, { loading: true, error: null })),
@@ -171,26 +196,6 @@ export const IdentityStore = signalStore(
 					),
 			),
 
-			loadAllUsers: rxMethod<void>((trigger$) =>
-				trigger$.pipe(
-					switchMap(() =>
-						// TODO: Implemenet pagination @_@
-						identityService.getAllUsers(0, 100, 'updatedAt,ASC').pipe(
-							tap((allUsersRes) => {
-								patchState(store, {
-									users: allUsersRes.content,
-									usersTotalCount: allUsersRes.totalElements,
-								});
-							}),
-							catchError(() => {
-								patchState(store, { users: [], usersTotalCount: 0 });
-								return EMPTY;
-							}),
-						),
-					),
-				),
-			),
-
 			createTenant: rxMethod<Partial<{ id: string; name: string; domain: string }>>((payload$) =>
 				payload$.pipe(
 					tap(() => patchState(store, { loading: true, error: null })),
@@ -262,6 +267,119 @@ export const IdentityStore = signalStore(
 									loading: false,
 									error: e?.message || 'Delete tenant failed',
 								});
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			loadAllUsers: rxMethod<void>((trigger$) =>
+				trigger$.pipe(
+					switchMap(() =>
+						// TODO: Implemenet pagination @_@
+						identityService.getAllUsers(0, 100, 'updatedAt,ASC').pipe(
+							tap((allUsersRes) => {
+								patchState(store, {
+									users: allUsersRes.content,
+									usersTotalCount: allUsersRes.totalElements,
+								});
+							}),
+							catchError(() => {
+								patchState(store, { users: [], usersTotalCount: 0 });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			searchUsers: rxMethod<{ q: string; page?: number; size?: number; sort?: string }>((params$) =>
+				params$.pipe(
+					switchMap(({ q, page = 0, size = 100, sort = 'updatedAt,ASC' }) =>
+						identityService.searchUser(q, page, size, sort).pipe(
+							tap((results) => {
+								patchState(store, {
+									users: results.content,
+									usersTotalCount: results?.totalElements ?? 0,
+								});
+							}),
+							catchError(() => {
+								patchState(store, { users: [], usersTotalCount: 0 });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			createUser: rxMethod<Partial<UserCreateRequest>>((payload$) =>
+				payload$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((payload) =>
+						identityService.createUser(payload).pipe(
+							tap((user) => {
+								const updated = [...store.users(), user];
+								patchState(store, {
+									users: updated,
+									usersTotalCount: store.usersTotalCount() + 1,
+									loading: false,
+									error: null,
+								});
+							}),
+							catchError((e) => {
+								patchState(store, { loading: false, error: e?.message || 'Create user failed' });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			updateUser: rxMethod<{
+				id: string;
+				changes: Partial<UserUpdateRequest>;
+			}>((payload$) =>
+				payload$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap(({ id, changes }) =>
+						identityService.updateUser(id, changes).pipe(
+							tap((updatedUser) => {
+								const list = store.users();
+								const idx = list.findIndex((u) => u.id === id);
+								if (idx >= 0) {
+									const next = [...list];
+									next[idx] = updatedUser;
+									patchState(store, { users: next, loading: false, error: null });
+								} else {
+									patchState(store, { loading: false, error: null });
+								}
+							}),
+							catchError((e) => {
+								patchState(store, { loading: false, error: e?.message || 'Update user failed' });
+								return EMPTY;
+							}),
+						),
+					),
+				),
+			),
+
+			deleteUser: rxMethod<string>((id$) =>
+				id$.pipe(
+					tap(() => patchState(store, { loading: true, error: null })),
+					switchMap((id) =>
+						identityService.deleteUser(id).pipe(
+							tap(() => {
+								const filtered = store.users().filter((u) => u.id !== id);
+								patchState(store, {
+									users: filtered,
+									usersTotalCount: Math.max(0, store.usersTotalCount() - 1),
+									loading: false,
+									error: null,
+								});
+							}),
+							catchError((e) => {
+								patchState(store, { loading: false, error: e?.message || 'Delete user failed' });
 								return EMPTY;
 							}),
 						),

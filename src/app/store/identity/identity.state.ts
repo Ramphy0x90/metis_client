@@ -7,6 +7,7 @@ export interface IdentityState {
 	surname: string | null;
 	isAuthenticated: boolean;
 	roles: string[];
+	availableRoles: string[];
 	accessToken: string | null;
 	refreshToken: string | null;
 	tokenType: string | null;
@@ -24,6 +25,7 @@ export const initialIdentityState: IdentityState = {
 	surname: null,
 	isAuthenticated: false,
 	roles: [],
+	availableRoles: [],
 	accessToken: null,
 	refreshToken: null,
 	tokenType: null,

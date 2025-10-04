@@ -30,6 +30,7 @@ export class EntityModalComponent<T extends DbEntity & Record<string, unknown>> 
 	@Input() fields: EntityField[] = [];
 	@Input() value: T | null = null;
 	@Input() visible: boolean = false;
+	@Input() dropdownData?: Signal<Record<string, unknown[]>>;
 
 	@Output() cancel = new EventEmitter<void>();
 	@Output() save = new EventEmitter<T>();
@@ -44,6 +45,10 @@ export class EntityModalComponent<T extends DbEntity & Record<string, unknown>> 
 		// Clone value to local to avoid mutating input directly
 		const cloned = this.value ? (JSON.parse(JSON.stringify(this.value)) as T) : ({} as T);
 		this.localValue.set(cloned);
+	}
+
+	visibleFields(): EntityField[] {
+		return this.fields.filter((field) => this.isFieldVisible(field.visibility));
 	}
 
 	isFieldVisible(visibility: EntityFieldVisiblity): boolean {
@@ -87,5 +92,21 @@ export class EntityModalComponent<T extends DbEntity & Record<string, unknown>> 
 			default:
 				return '';
 		}
+	}
+
+	getDropdownOptions(field: EntityField): DbEntity[] {
+		if (this.dropdownData && field.dropdownDataSourceID) {
+			return (this.dropdownData()?.[field.dropdownDataSourceID] as DbEntity[]) ?? [];
+		}
+
+		return [];
+	}
+
+	getDropdownOptLabel(opt: Record<string, unknown>, field: EntityField): string {
+		if (field.dropdownDataLabelID) {
+			return opt[field.dropdownDataLabelID] as string;
+		}
+
+		return '';
 	}
 }

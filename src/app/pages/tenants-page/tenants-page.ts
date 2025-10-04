@@ -26,7 +26,6 @@ export class TenantsPage {
 			type: EntityFieldType.TEXT,
 			size: EntityFieldSize.AUTO,
 			visibility: EntityFieldVisiblity.ALL,
-			required: true,
 		},
 		{
 			key: 'domain',
@@ -34,7 +33,6 @@ export class TenantsPage {
 			type: EntityFieldType.TEXT,
 			size: EntityFieldSize.MD,
 			visibility: EntityFieldVisiblity.ALL,
-			required: true,
 		},
 		{
 			key: 'employeeCount',
@@ -42,7 +40,6 @@ export class TenantsPage {
 			type: EntityFieldType.NUMBER,
 			size: EntityFieldSize.SM,
 			visibility: EntityFieldVisiblity.TABLE,
-			required: false,
 		},
 		{
 			key: 'activeBookings',
@@ -50,7 +47,6 @@ export class TenantsPage {
 			type: EntityFieldType.NUMBER,
 			size: EntityFieldSize.SM,
 			visibility: EntityFieldVisiblity.TABLE,
-			required: false,
 		},
 	] as const;
 
@@ -88,6 +84,7 @@ export class TenantsPage {
 			id: '',
 			name: '',
 			domain: '',
+			adminCount: 0,
 			employeeCount: 0,
 			customerCount: 0,
 			createdAt: new Date(),

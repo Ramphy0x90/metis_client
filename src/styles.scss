@@ -36,7 +36,8 @@ button {
 	padding: map.get($space, sm) map.get($space, md);
 }
 
-input {
+input,
+select {
 	padding: 4px 6px;
 	font-size: medium;
 
