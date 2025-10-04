@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-	Component,
-	effect,
-	inject,
-	Injector,
-	OnInit,
-	Signal,
-	signal,
-	computed,
-} from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { DCardComponent } from '../../components/d-card-component/d-card-component';
 import { EntityTableComponent } from '../../components/entity-table-component/entity-table-component';
 import { EntityModalComponent } from '../../components/entity-modal-component/entity-modal-component';
