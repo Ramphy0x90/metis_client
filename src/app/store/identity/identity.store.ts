@@ -12,6 +12,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect } from '@angular/core';
 import { IdentityState, initialIdentityState } from './identity.state';
 import { IdentityService } from '../../services/identity/identity-service';
+import { TenantAwarenessService } from '../../services/tenant-awareness/tenant-awareness.service';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { catchError, tap } from 'rxjs/operators';
 import { EMPTY, switchMap, Observable } from 'rxjs';
@@ -19,6 +20,7 @@ import { STORE_FEATURE } from '../features';
 import { Role } from '../../types/identity/roles';
 import { UserCreateRequest } from '../../types/user/user-create-request';
 import { UserUpdateRequest } from '../../types/user/user-update-request';
+import { ROUTES } from '../../app.routes';
 
 export const IdentityStore = signalStore(
 	withState<IdentityState>(initialIdentityState),
@@ -54,15 +56,18 @@ export const IdentityStore = signalStore(
 
 		// Effect after authentication
 		const navigateToDashboard = simpleEffect(() => {
-			router.navigate(['/dashboard']);
+			router.navigate([ROUTES.DASHBOARD]);
 		});
 
 		// Effect after logout
 		const navigateToAuth = simpleEffect(() => {
-			router.navigate(['/auth']);
+			router.navigate([ROUTES.AUTH]);
 		});
 
 		return {
+			setCurrentTenant(value: string | null): void {
+				patchState(store, { currentTenant: value });
+			},
 			loadUserRoles: rxMethod<void>((trigger$) =>
 				trigger$.pipe(
 					switchMap(() =>
@@ -398,7 +403,11 @@ export const IdentityStore = signalStore(
 				patchState(store, { ...initialIdentityState, ...saved, loading: false, error: null });
 			}
 
-			// On store change, persiste in localstorage for re-hydration
+			// Initialize current tenant from URL (do not persist; always source of truth)
+			const tenantAwarenessService = inject(TenantAwarenessService);
+			patchState(store, { currentTenant: tenantAwarenessService.getTenant() });
+
+			// On store change, persist in localstorage for re-hydration (exclude currentTenant)
 			effect(() => {
 				const snapshot = {
 					username: store.username?.(),

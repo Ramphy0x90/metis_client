@@ -11,6 +11,7 @@ export interface IdentityState {
 	accessToken: string | null;
 	refreshToken: string | null;
 	tokenType: string | null;
+	currentTenant: string | null;
 	error: string | null;
 	loading: boolean;
 	tenants: TenantResponse[];
@@ -29,6 +30,7 @@ export const initialIdentityState: IdentityState = {
 	accessToken: null,
 	refreshToken: null,
 	tokenType: null,
+	currentTenant: null,
 	error: null,
 	loading: false,
 	tenants: [],
