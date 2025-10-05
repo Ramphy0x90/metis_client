@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { IdentityStore } from '../../store/identity/identity.store';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../app.routes';
+import { TenantAwarenessService } from '../../services/tenant-awareness/tenant-awareness';
 
 @Component({
 	selector: 'app-authentication-page',
@@ -16,11 +17,13 @@ import { ROUTES } from '../../app.routes';
 })
 export class AuthenticationPage implements OnInit {
 	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
+	private tenantAwareness: TenantAwarenessService = inject(TenantAwarenessService);
 	private router: Router = inject(Router);
 
 	authCredentials: AuthenticationRequest = {
 		email: '',
 		password: '',
+		tenantDomain: '',
 	};
 
 	ngOnInit(): void {
@@ -30,6 +33,7 @@ export class AuthenticationPage implements OnInit {
 	}
 
 	login(): void {
+		this.authCredentials.tenantDomain = this.tenantAwareness.getTenant() ?? '';
 		this.identityStore.login(this.authCredentials);
 	}
 }

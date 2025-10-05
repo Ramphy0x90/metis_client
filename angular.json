@@ -28,7 +28,11 @@
 								"input": "public"
 							}
 						],
-						"styles": ["src/styles.scss", "node_modules/bootstrap-icons/font/bootstrap-icons.css"]
+						"styles": [
+							"src/styles.scss",
+							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
+							"node_modules/ngx-toastr/toastr.css"
+						]
 					},
 					"configurations": {
 						"production": {
@@ -92,7 +96,11 @@
 								"input": "public"
 							}
 						],
-						"styles": ["src/styles.scss", "node_modules/bootstrap-icons/font/bootstrap-icons.css"]
+						"styles": [
+							"src/styles.scss",
+							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
+							"node_modules/ngx-toastr/toastr.css"
+						]
 					}
 				}
 			}

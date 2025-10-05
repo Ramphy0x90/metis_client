@@ -5,6 +5,7 @@ import { AuditLogService } from '../../services/audit-log/audit-log';
 import { AuditLogEntry, Page } from '../../types/audit-log-entry';
 import { IdentityStore } from '../../store/identity';
 import { TenantResponse } from '../../types/tenant/tenant-response';
+import { Role } from '../../types/identity/roles';
 
 @Component({
 	selector: 'logs-viewer',
@@ -48,7 +49,10 @@ export class LogsViewer {
 			const endIso = this.end();
 			const page = this.page();
 			const size = this.size();
-			const tenantID = this.currentTenant()?.id;
+			const tenantID =
+				this.identityStore.userMainRole() !== Role.GLOBAL_ADMIN
+					? this.currentTenant()?.id
+					: undefined;
 
 			switch (mode) {
 				case 'latest':
@@ -94,8 +98,6 @@ export class LogsViewer {
 		this.end.set(this.formatForInput(now));
 		this.page.set(0);
 	}
-
-	private getLogs(): void {}
 
 	private formatForInput(date: Date): string {
 		const pad = (n: number) => String(n).padStart(2, '0');
