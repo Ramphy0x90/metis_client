@@ -21,6 +21,13 @@ import {
 export class TenantsPage {
 	readonly TENANT_ENTITY_FIELDS: EntityField[] = [
 		{
+			key: 'id',
+			label: 'ID',
+			type: EntityFieldType.TEXT,
+			size: EntityFieldSize.AUTO,
+			visibility: EntityFieldVisiblity.ALL,
+		},
+		{
 			key: 'name',
 			label: 'Name',
 			type: EntityFieldType.TEXT,

@@ -12,11 +12,22 @@ export class AuditLogService {
 
 	constructor(private httpClient: HttpClient) {}
 
-	public getLogs(page: number, size: number, sort?: string): Observable<Page<AuditLogEntry>> {
+	public getLogs(
+		page: number,
+		size: number,
+		sort?: string,
+		tenantId?: string,
+	): Observable<Page<AuditLogEntry>> {
 		let params = new HttpParams().set('page', String(page)).set('size', String(size));
 
 		if (sort) {
 			params = params.set('sort', sort);
+		}
+
+		if (tenantId) {
+			return this.httpClient.get<Page<AuditLogEntry>>(`${this.API_BASE}/logs/tenant/${tenantId}`, {
+				params,
+			});
 		}
 
 		return this.httpClient.get<Page<AuditLogEntry>>(`${this.API_BASE}/logs`, { params });

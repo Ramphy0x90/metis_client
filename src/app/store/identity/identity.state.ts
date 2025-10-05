@@ -11,7 +11,7 @@ export interface IdentityState {
 	accessToken: string | null;
 	refreshToken: string | null;
 	tokenType: string | null;
-	currentTenant: string | null;
+	currentTenant: TenantResponse | null;
 	error: string | null;
 	loading: boolean;
 	tenants: TenantResponse[];

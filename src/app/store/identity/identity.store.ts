@@ -12,9 +12,9 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect } from '@angular/core';
 import { IdentityState, initialIdentityState } from './identity.state';
 import { IdentityService } from '../../services/identity/identity-service';
-import { TenantAwarenessService } from '../../services/tenant-awareness/tenant-awareness.service';
+import { TenantResponse } from '../../types/tenant/tenant-response';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, take } from 'rxjs/operators';
 import { EMPTY, switchMap, Observable } from 'rxjs';
 import { STORE_FEATURE } from '../features';
 import { Role } from '../../types/identity/roles';
@@ -65,8 +65,21 @@ export const IdentityStore = signalStore(
 		});
 
 		return {
-			setCurrentTenant(value: string | null): void {
+			setCurrentTenant(value: TenantResponse | null): void {
 				patchState(store, { currentTenant: value });
+			},
+			resolveCurrentTenant(): void {
+				identityService
+					.getTenantByDomain()
+					.pipe(take(1))
+					.subscribe({
+						next: (tenant) => {
+							patchState(store, { currentTenant: tenant });
+						},
+						error: () => {
+							patchState(store, { currentTenant: null });
+						},
+					});
 			},
 			loadUserRoles: rxMethod<void>((trigger$) =>
 				trigger$.pipe(
@@ -283,7 +296,7 @@ export const IdentityStore = signalStore(
 				trigger$.pipe(
 					switchMap(() =>
 						// TODO: Implemenet pagination @_@
-						identityService.getAllUsers(0, 100, 'updatedAt,ASC').pipe(
+						identityService.getAllUsers(0, 100, 'updatedAt,ASC', store.currentTenant()?.id).pipe(
 							tap((allUsersRes) => {
 								patchState(store, {
 									users: allUsersRes.content,
@@ -403,9 +416,15 @@ export const IdentityStore = signalStore(
 				patchState(store, { ...initialIdentityState, ...saved, loading: false, error: null });
 			}
 
-			// Initialize current tenant from URL (do not persist; always source of truth)
-			const tenantAwarenessService = inject(TenantAwarenessService);
-			patchState(store, { currentTenant: tenantAwarenessService.getTenant() });
+			// Initialize current tenant when authenticated
+			effect(() => {
+				const authenticated = store.isAuthenticated?.();
+				if (authenticated) {
+					store.resolveCurrentTenant();
+				} else {
+					patchState(store, { currentTenant: null });
+				}
+			});
 
 			// On store change, persist in localstorage for re-hydration (exclude currentTenant)
 			effect(() => {

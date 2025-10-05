@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal, computed } from '@angular/core';
+import { Component, effect, inject, signal, computed, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuditLogService } from '../../services/audit-log/audit-log';
 import { AuditLogEntry, Page } from '../../types/audit-log-entry';
+import { IdentityStore } from '../../store/identity';
+import { TenantResponse } from '../../types/tenant/tenant-response';
 
 @Component({
 	selector: 'logs-viewer',
@@ -13,6 +15,9 @@ import { AuditLogEntry, Page } from '../../types/audit-log-entry';
 })
 export class LogsViewer {
 	private auditLogService: InstanceType<typeof AuditLogService> = inject(AuditLogService);
+	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
+
+	readonly currentTenant: Signal<TenantResponse | null> = this.identityStore.currentTenant;
 
 	// Date range controls
 	start = signal<string>('');
@@ -43,31 +48,34 @@ export class LogsViewer {
 			const endIso = this.end();
 			const page = this.page();
 			const size = this.size();
+			const tenantID = this.currentTenant()?.id;
 
-			if (mode === 'latest') {
-				this.auditLogService
-					.getLogs(page, size, 'timestamp,DESC')
-					.subscribe((resp: Page<AuditLogEntry>) => {
-						this.logs.set(resp.content ?? []);
-						this.totalElements.set(resp.totalElements ?? 0);
-						this.totalPages.set(resp.totalPages ?? 0);
-					});
-				return;
+			switch (mode) {
+				case 'latest':
+					this.auditLogService
+						.getLogs(page, size, 'timestamp,DESC', tenantID)
+						.subscribe((resp: Page<AuditLogEntry>) => {
+							this.logs.set(resp.content ?? []);
+							this.totalElements.set(resp.totalElements ?? 0);
+							this.totalPages.set(resp.totalPages ?? 0);
+						});
+					break;
+				case 'range':
+					if (!startIso || !endIso) return;
+					const startDate = this.toStartOfDay(startIso);
+					const endDate = this.toEndOfDay(endIso);
+					if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) return;
+
+					this.auditLogService
+						.getLogsByDateRange(startDate, endDate, page, size, 'timestamp,DESC')
+						.subscribe((resp: Page<AuditLogEntry>) => {
+							this.logs.set(resp.content ?? []);
+							this.totalElements.set(resp.totalElements ?? 0);
+							this.totalPages.set(resp.totalPages ?? 0);
+						});
+
+					break;
 			}
-
-			// range mode: date-only strings → start/end of day Date objects
-			if (!startIso || !endIso) return;
-			const startDate = this.toStartOfDay(startIso);
-			const endDate = this.toEndOfDay(endIso);
-			if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) return;
-
-			this.auditLogService
-				.getLogsByDateRange(startDate, endDate, page, size, 'timestamp,DESC')
-				.subscribe((resp: Page<AuditLogEntry>) => {
-					this.logs.set(resp.content ?? []);
-					this.totalElements.set(resp.totalElements ?? 0);
-					this.totalPages.set(resp.totalPages ?? 0);
-				});
 		});
 	}
 
@@ -86,6 +94,8 @@ export class LogsViewer {
 		this.end.set(this.formatForInput(now));
 		this.page.set(0);
 	}
+
+	private getLogs(): void {}
 
 	private formatForInput(date: Date): string {
 		const pad = (n: number) => String(n).padStart(2, '0');

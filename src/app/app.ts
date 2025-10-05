@@ -5,6 +5,7 @@ import { IdentityStore } from './store/identity/identity.store';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header-component/header-component';
 import { Role } from './types/identity/roles';
+import { TenantResponse } from './types/tenant/tenant-response';
 import { filter, Subscription } from 'rxjs';
 
 @Component({
@@ -20,7 +21,7 @@ export class App implements OnInit {
 	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
 	private router: Router = inject(Router);
 
-	readonly currentTenant: Signal<string | null> = this.identityStore.currentTenant;
+	readonly currentTenant: Signal<TenantResponse | null> = this.identityStore.currentTenant;
 	readonly isUserAuthenticated: Signal<boolean> = this.identityStore.isAuthenticated;
 	readonly userRole: Signal<string>;
 
@@ -45,6 +46,9 @@ export class App implements OnInit {
 					switch (this.identityStore.userMainRole()) {
 						case Role.GLOBAL_ADMIN:
 							this.identityStore.loadAllTenants();
+							this.identityStore.loadAllUsers();
+							break;
+						case Role.ADMIN:
 							this.identityStore.loadAllUsers();
 							break;
 						default:
