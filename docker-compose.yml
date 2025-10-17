@@ -1,37 +1,31 @@
 version: '3.8'
 
 services:
-  nginx:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         - API_URL=${API_URL}
         - SERVER_URL=${SERVER_URL}
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      - API_URL=${API_URL}
-      - SERVER_URL=${SERVER_URL}
-      - DOMAIN_NAME=${DOMAIN_NAME}
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    depends_on:
-      - certbot
+    # No runtime env needed; values are baked at build time
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ['CMD-SHELL', 'wget -qO- http://localhost/health | grep -q healthy']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - traefik-network
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.metis-client.rule=Host(`metiss.ch`)'
+      - 'traefik.http.routers.metis-client.entrypoints=websecure'
+      - 'traefik.http.routers.metis-client.tls=true'
+      - 'traefik.http.routers.metis-client.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}'
+      - 'traefik.http.services.metis-client.loadbalancer.server.port=80'
 
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot --webroot-path=/var/www/certbot; sleep 12h & wait $${!}; done;'"
-    restart: unless-stopped
+networks:
+  traefik-network:
+    external: true

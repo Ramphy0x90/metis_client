@@ -30,18 +30,15 @@ RUN npm run build
 # Production stage with nginx
 FROM nginx:alpine
 
-# Tools for healthcheck
-RUN apk add --no-cache curl
-
 # Copy built application from build stage (Angular application builder output)
 # Angular 17+/20 with @angular/build:application outputs to dist/<project>/browser
 COPY --from=build /app/dist/metis_client/browser /usr/share/nginx/html
 
-# Copy nginx configuration
+# Copy nginx configuration (Traefik terminates TLS; Nginx serves HTTP)
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose ports
-EXPOSE 80 443
+# Expose port
+EXPOSE 80
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
