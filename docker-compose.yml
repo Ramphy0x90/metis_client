@@ -14,7 +14,7 @@ services:
       - traefik-network
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.metis-client.rule=Host(`metiss.ch`)'
+      - 'traefik.http.routers.metis-client.rule=Host(`metiss.ch`) && !PathPrefix(`/api`)'
       - 'traefik.http.routers.metis-client.entrypoints=websecure'
       - 'traefik.http.routers.metis-client.tls=true'
       - 'traefik.http.routers.metis-client.tls.certresolver=letsencrypt'
