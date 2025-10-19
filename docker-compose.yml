@@ -8,7 +8,7 @@ services:
       args:
         - API_URL=${API_URL}
         - SERVER_URL=${SERVER_URL}
-    # No runtime env needed; values are baked at build time
+    container_name: metis-frontend
     restart: unless-stopped
     networks:
       - traefik-network
