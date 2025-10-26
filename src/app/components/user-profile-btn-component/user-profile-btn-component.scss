@@ -38,6 +38,10 @@
 	gap: map.get($space, sm);
 }
 
+.user-profile-container .profile-options .general-options {
+	gap: map.get($space, sm);
+}
+
 .user-profile-container .manage-option,
 .general-options .profile-option {
 	&:hover {
