@@ -2,10 +2,12 @@ import { Component, ElementRef, HostListener, Signal, inject } from '@angular/co
 import { IdentityStore } from '../../store/identity/identity.store';
 import { CommonModule } from '@angular/common';
 import { computed } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { ROUTES } from '../../app.routes';
 
 @Component({
 	selector: 'user-profile-btn-component',
-	imports: [CommonModule],
+	imports: [CommonModule, RouterModule],
 	templateUrl: './user-profile-btn-component.html',
 	styleUrl: './user-profile-btn-component.scss',
 	standalone: true,
@@ -25,6 +27,10 @@ export class UserProfileBtnComponent {
 		this.userLabel = this.identityStore.userLabel;
 		this.isUserAuthenticated = this.identityStore.isAuthenticated;
 		this.mainRole = this.identityStore.userMainRole;
+	}
+
+	get adminRoute() {
+		return ROUTES.DASHBOARD;
 	}
 
 	@HostListener('document:click', ['$event'])

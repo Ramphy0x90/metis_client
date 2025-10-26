@@ -1,5 +1,5 @@
-import { TenantResponse } from '../../types/tenant/tenant-response';
-import { UserResponse } from '../../types/user/user-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
+import { UserResponse } from '../../types/identity/user/user-response';
 
 export interface IdentityState {
 	username: string | null;

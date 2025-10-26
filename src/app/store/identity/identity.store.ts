@@ -12,14 +12,14 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect } from '@angular/core';
 import { IdentityState, initialIdentityState } from './identity.state';
 import { IdentityService } from '../../services/identity/identity-service';
-import { TenantResponse } from '../../types/tenant/tenant-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { catchError, tap, take } from 'rxjs/operators';
 import { EMPTY, switchMap, Observable } from 'rxjs';
 import { STORE_FEATURE } from '../features';
 import { Role } from '../../types/identity/roles';
-import { UserCreateRequest } from '../../types/user/user-create-request';
-import { UserUpdateRequest } from '../../types/user/user-update-request';
+import { UserCreateRequest } from '../../types/identity/user/user-create-request';
+import { UserUpdateRequest } from '../../types/identity/user/user-update-request';
 import { ROUTES } from '../../app.routes';
 
 export const IdentityStore = signalStore(

@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use '../../../assets/variables' as *;
+
+.home-page .services-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: map.get($space, md);
+}
+
+.services-container .tenant-service {
+	cursor: pointer;
+	border-radius: map.get($border, radius);
+}
+
+.tenant-service .service-img {
+	width: 100%;
+	height: 200px;
+	border-radius: map.get($border, radius);
+	background-color: map.get($light-colors, foreground-light);
+}
+
+.tenant-service .service-header .title {
+	font-size: 18px;
+}
+
+.tenant-service .service-header .price {
+	font-size: 18px;
+	color: map.get($light-colors, info);
+}
+
+.services-container .tenant-service .content {
+	padding: map.get($space, md);
+	gap: map.get($space, sm);
+}
+
+.content .service-description {
+	color: map.get($light-colors, text-neutral);
+}

@@ -4,7 +4,7 @@ import { DCardComponent } from '../../components/d-card-component/d-card-compone
 import { EntityTableComponent } from '../../components/entity-table-component/entity-table-component';
 import { EntityModalComponent } from '../../components/entity-modal-component/entity-modal-component';
 import { IdentityStore } from '../../store/identity';
-import { TenantResponse } from '../../types/tenant/tenant-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
 import {
 	EntityField,
 	EntityFieldSize,

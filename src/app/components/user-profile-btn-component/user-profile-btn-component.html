@@ -9,6 +9,11 @@
 	@if (areOptionsVisible) {
 		<div class="profile-options flex flex-col shadow-md">
 			<div class="general-options flex flex-col">
+				<div class="manage-option" [routerLink]="adminRoute">
+					<i class="bi bi-ui-checks-grid"></i>
+					Manage
+				</div>
+
 				<div class="profile-option">
 					<i class="bi bi-person"></i>
 					Profile

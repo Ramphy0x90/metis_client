@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuditLogService } from '../../services/audit-log/audit-log';
 import { AuditLogEntry, Page } from '../../types/audit-log-entry';
 import { IdentityStore } from '../../store/identity';
-import { TenantResponse } from '../../types/tenant/tenant-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
 import { Role } from '../../types/identity/roles';
 
 @Component({

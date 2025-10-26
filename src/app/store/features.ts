@@ -1,5 +1,6 @@
 export enum STORE_FEATURE {
+	NAVIGATION = 'navigation',
 	IDENTITY = 'identity',
 	TENANT = 'tenant',
-	NAVIGATION = 'navigation',
+	BOOKING = 'booking',
 }

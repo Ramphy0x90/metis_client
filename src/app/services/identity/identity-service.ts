@@ -4,11 +4,11 @@ import { Observable, of } from 'rxjs';
 import { AuthenticationResponse } from '../../types/identity/authentication-response';
 import { AuthenticationRequest } from '../../types/identity/authentication-request';
 import { environment } from '../../../environments/environment';
-import { TenantResponse } from '../../types/tenant/tenant-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
 import { DbPage } from '../../types/db-page';
-import { UserResponse } from '../../types/user/user-response';
-import { UserCreateRequest } from '../../types/user/user-create-request';
-import { UserUpdateRequest } from '../../types/user/user-update-request';
+import { UserResponse } from '../../types/identity/user/user-response';
+import { UserCreateRequest } from '../../types/identity/user/user-create-request';
+import { UserUpdateRequest } from '../../types/identity/user/user-update-request';
 import { TenantAwarenessService } from '../tenant-awareness/tenant-awareness';
 
 @Injectable({

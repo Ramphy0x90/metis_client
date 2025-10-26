@@ -5,7 +5,7 @@ import { IdentityStore } from './store/identity/identity.store';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header-component/header-component';
 import { Role } from './types/identity/roles';
-import { TenantResponse } from './types/tenant/tenant-response';
+import { TenantResponse } from './types/identity/tenant/tenant-response';
 import { filter, Subscription } from 'rxjs';
 
 @Component({

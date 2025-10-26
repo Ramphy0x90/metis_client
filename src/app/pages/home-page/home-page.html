@@ -1,3 +1,26 @@
-<div class="dashboard-page page-container">
-	<div class="body flex">HOME {{ currentTenant()?.name || currentTenant()?.domain }}</div>
+<div class="home-page page-container">
+	<div class="body flex">
+		<div class="header-container">
+			{{ currentTenant()?.name || currentTenant()?.domain }} services
+		</div>
+
+		<div class="identity-container">identity</div>
+
+		<div class="services-container">
+			@for (service of tenantServices$ | async; track service.id) {
+				<div class="tenant-service shadow-lg">
+					<div class="service-img"></div>
+
+					<div class="content flex flex-col">
+						<div class="service-header flex justify-between">
+							<div class="title">{{ service.title }}</div>
+							<div class="price">{{ service.price }} {{ priceUnit }}</div>
+						</div>
+
+						<div class="service-description">{{ service.description }}</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 </div>

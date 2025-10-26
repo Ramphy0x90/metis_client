@@ -1,4 +1,4 @@
-import { DbEntity } from '../db-entity';
+import { DbEntity } from '../../db-entity';
 
 export type UserResponse = DbEntity & {
 	email: string;

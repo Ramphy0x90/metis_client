@@ -10,9 +10,8 @@ import {
 	EntityFieldVisiblity,
 } from '../../types/entity/field';
 import { IdentityStore } from '../../store/identity';
-import { UserResponse } from '../../types/user/user-response';
-import { TenantResponse } from '../../types/tenant/tenant-response';
-import { UserUpdateRequest } from '../../types/user/user-update-request';
+import { UserResponse } from '../../types/identity/user/user-response';
+import { TenantResponse } from '../../types/identity/tenant/tenant-response';
 
 @Component({
 	selector: 'app-users-page',
