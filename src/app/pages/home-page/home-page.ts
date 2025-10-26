@@ -17,6 +17,12 @@ export class HomePage implements OnDestroy {
 	private identityStore: InstanceType<typeof IdentityStore> = inject(IdentityStore);
 	readonly currentTenant: Signal<TenantResponse | null> = this.identityStore.currentTenant;
 
+	// TODO: Put in tenant model
+	priceUnit: string = 'CHF';
+	currentPage: number = 0;
+	pageSize: number = 10;
+	tenantServices$: Observable<TenantServiceResponse[]>;
+
 	constructor(private bookingService: BookingService) {
 		this.tenantServices$ = this.bookingService
 			.getAllTenantServices(this.currentPage, this.pageSize)
@@ -25,12 +31,6 @@ export class HomePage implements OnDestroy {
 				map((services) => services.content),
 			);
 	}
-
-	// TODO: Put in tenant model
-	priceUnit: string = 'CHF';
-	currentPage: number = 0;
-	pageSize: number = 10;
-	tenantServices$: Observable<TenantServiceResponse[]>;
 
 	ngOnDestroy(): void {
 		this.destroyed$.next();

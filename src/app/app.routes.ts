@@ -7,6 +7,7 @@ import { AuthenticationPage } from './pages/authentication-page/authentication-p
 import { AuthGuard } from './guards/auth.guard';
 import { HomePage } from './pages/home-page/home-page';
 import { Role } from './types/identity/roles';
+import { ServicesPage } from './pages/services-page/services-page';
 
 export const enum ROUTES {
 	AUTH = 'auth',
@@ -14,6 +15,7 @@ export const enum ROUTES {
 	DASHBOARD = 'admin/dashboard',
 	TENANTS = 'admin/tenants',
 	USERS = 'admin/users',
+	SERVICES = 'admin/services',
 }
 
 export const NAV_BAR_ROUTES: readonly NavBarItem[] = [
@@ -30,6 +32,12 @@ export const NAV_BAR_ROUTES: readonly NavBarItem[] = [
 		icon: 'bi-people',
 		visibility: [Role.GLOBAL_ADMIN, Role.ADMIN],
 	},
+	{
+		label: 'Services',
+		path: ROUTES.SERVICES,
+		icon: 'bi-boxes',
+		visibility: [Role.GLOBAL_ADMIN, Role.ADMIN],
+	},
 ];
 
 export const routes: Routes = [
@@ -39,4 +47,5 @@ export const routes: Routes = [
 	{ path: ROUTES.DASHBOARD, component: DashboardPage, canActivate: [AuthGuard] },
 	{ path: ROUTES.TENANTS, component: TenantsPage, canActivate: [AuthGuard] },
 	{ path: ROUTES.USERS, component: UsersPage, canActivate: [AuthGuard] },
+	{ path: ROUTES.SERVICES, component: ServicesPage, canActivate: [AuthGuard] },
 ];

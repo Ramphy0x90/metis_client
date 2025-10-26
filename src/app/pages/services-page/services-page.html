@@ -1,0 +1,41 @@
+<div class="services-page page-container">
+	<div class="header">
+		<div class="page-title">Tenant Services Management</div>
+
+		<div class="context-actions">
+			<button class="create-service create-entity" (click)="onCreateServiceClick()">
+				<i class="bi bi-plus-lg"></i>
+				Create Service
+			</button>
+		</div>
+	</div>
+
+	<div class="body flex">
+		<div class="table-container">
+			<entity-table-component
+				[tableTitle]="'Services'"
+				[fields]="TENANT_SERVICE_ENTITY_FIELDS"
+				[data]="tenantServices"
+				(viewEntity)="onViewService($event)"
+				(editEntity)="onEditService($event)">
+			</entity-table-component>
+		</div>
+	</div>
+</div>
+
+<entity-modal-component
+	[title]="
+		modalMode() === 'create'
+			? 'Create Service'
+			: modalMode() === 'edit'
+				? 'Edit Service'
+				: 'Service Details'
+	"
+	[mode]="modalMode()"
+	[fields]="TENANT_SERVICE_ENTITY_FIELDS"
+	[value]="selectedService()"
+	[visible]="showModal()"
+	[dropdownData]="dropdownOptions"
+	(cancel)="onModalCancel()"
+	(save)="onModalSave($event)">
+</entity-modal-component>

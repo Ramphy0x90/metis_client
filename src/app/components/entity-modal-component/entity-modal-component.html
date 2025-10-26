@@ -26,7 +26,7 @@
 							} @else if (field.type === 'dropdown' && ['create', 'edit'].includes(mode)) {
 								<select
 									[ngModel]="getFieldValue(field.key)"
-									(ngModelChange)="setFieldValue(field.key, [$event])">
+									(ngModelChange)="setFieldValue(field.key, $event)">
 									@for (opt of getDropdownOptions(field); track opt.id) {
 										<option [value]="opt.id">{{ getDropdownOptLabel(opt, field) }}</option>
 									}

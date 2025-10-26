@@ -31,3 +31,14 @@
 	gap: map.get($space, lg);
 	overflow-y: auto;
 }
+
+::ng-deep .page-container .context-actions .create-entity {
+	font-size: smaller;
+	color: map.get($light-colors, text-light);
+	background-color: map.get($light-colors, primary);
+	padding: map.get($space, sm) map.get($space, md);
+}
+
+::ng-deep .create-entity i {
+	font-size: medium;
+}

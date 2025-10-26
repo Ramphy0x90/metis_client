@@ -7,6 +7,7 @@ import { DbPage } from '../../types/db-page';
 import { Observable, of } from 'rxjs';
 import { IdentityStore } from '../../store/identity';
 import { TenantResponse } from '../../types/identity/tenant/tenant-response';
+import { TenantServiceCreateRequest } from '../../types/booking/tenant-service/tenant-service-create-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,6 +20,22 @@ export class BookingService {
 	readonly currentTenant: Signal<TenantResponse | null> = this.identityStore.currentTenant;
 
 	constructor(private httpClient: HttpClient) {}
+
+	public getAllServices(
+		page: number,
+		size: number,
+		sort?: string,
+	): Observable<DbPage<TenantServiceResponse>> {
+		let params = new HttpParams().set('page', String(page)).set('size', String(size));
+
+		if (sort) {
+			params = params.set('sort', sort);
+		}
+
+		return this.httpClient.get<DbPage<TenantServiceResponse>>(`${this.API_BASE_SERVICES}`, {
+			params,
+		});
+	}
 
 	public getAllTenantServices(
 		page: number,
@@ -37,5 +54,18 @@ export class BookingService {
 				params,
 			},
 		);
+	}
+
+	public createService(
+		payload: Partial<TenantServiceCreateRequest>,
+	): Observable<TenantServiceResponse> {
+		return this.httpClient.post<TenantServiceResponse>(`${this.API_BASE_SERVICES}`, payload);
+	}
+
+	public updateService(
+		id: string,
+		payload: Partial<TenantServiceResponse>,
+	): Observable<TenantServiceResponse> {
+		return this.httpClient.put<TenantServiceResponse>(`${this.API_BASE_SERVICES}/${id}`, payload);
 	}
 }

@@ -1,13 +1,2 @@
 @use 'sass:map';
 @use '../../../assets/variables' as *;
-
-.tenants-page .context-actions .create-tenant {
-	font-size: smaller;
-	color: map.get($light-colors, text-light);
-	background-color: map.get($light-colors, primary);
-	padding: map.get($space, sm) map.get($space, md);
-}
-
-.create-tenant i {
-	font-size: medium;
-}

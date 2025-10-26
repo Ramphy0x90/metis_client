@@ -1,13 +1,2 @@
 @use 'sass:map';
 @use '../../../assets/variables' as *;
-
-.users-page .context-actions .create-user {
-	font-size: smaller;
-	color: map.get($light-colors, text-light);
-	background-color: map.get($light-colors, primary);
-	padding: map.get($space, sm) map.get($space, md);
-}
-
-.create-user i {
-	font-size: medium;
-}
