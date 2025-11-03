@@ -14,8 +14,7 @@ services:
       - traefik-network
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.metis-frontend.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.metiss.ch`, `metiss.ch`) && PathPrefix(`/`)'
-      - 'traefik.http.routers.metis-frontend.priority=1'
+      - 'traefik.http.routers.metis-frontend.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.metiss.ch`, `metiss.ch`) && !PathPrefix(`/api`)'
       - 'traefik.http.routers.metis-frontend.entrypoints=websecure'
       - 'traefik.http.routers.metis-frontend.tls=true'
       - 'traefik.http.routers.metis-frontend.tls.certresolver=letsencrypt'
